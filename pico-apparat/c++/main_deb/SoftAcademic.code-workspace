@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"name": "main_deb",
+			"path": "."
+		},
+		{
+			"name": "UnitTest_arduino",
+			"path": "../../../unit-test/c++/UnitTest_arduino"
+		}
+	],
+	"settings": {}
+}
