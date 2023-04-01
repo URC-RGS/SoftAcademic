@@ -97,10 +97,10 @@ class RovController():
                         cor_servo_cam = 1
 
                     if event.button == self.arm_up:
-                        self.data_pult['led'] = 160
+                        self.data_pult['led'] = 100
 
                     if event.button == self.arm_down:
-                        self.data_pult['led'] = 100
+                        self.data_pult['led'] = 60
 
                     if event.button == self.led_up:
                         self.data_pult['man'] = 1
