@@ -135,7 +135,7 @@ class Rov_SerialPort:
 
         return dataout
 
-    def send_data(self, data: list = [50, 50, 50, 50, 50, 50, 90, 90, 0, 0]):
+    def send_data(self, data: list = [50, 50, 50, 50, 50, 50, 90, 90, 90, 90]):
         #отправка массива на аппарат
         try:
             data = (f'{str(data)}\n').encode()
@@ -170,7 +170,7 @@ class Rov_SerialPort_Gebag:
             
         return data
 
-    def send_data(self, data: list = [50, 50, 50, 50, 50, 50, 90, 90, 0, 0]):
+    def send_data(self, data: list = [50, 50, 50, 50, 50, 50, 90, 90, 90, 90]):
         #отправка массива на аппарат
 
         self.logi.debug(f'Send data: {str(data)}')

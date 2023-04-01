@@ -24,7 +24,7 @@ class RovController():
         self.data_pult = {'j1_val_y': 0, 'j1_val_x': 0,
                          'j2_val_y': 0, 'j2_val_x': 0,
                          'man': 90, 'servo_cam': 90,
-                         'led': 0}
+                         'led': 90}
 
         self.camera_up = int(self.joi_config[self.joi_config['camera_up']])
 
