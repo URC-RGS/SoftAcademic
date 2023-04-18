@@ -27,10 +27,10 @@
 
         
 Общие источники:
-    https://alexgyver.ru/arduino-algorithms/
-    https://alexgyver.ru/lessons/parsing/
-    https://alexgyver.ru/lessons/filters/
-    https://github.com/GyverLibs/GyverPID
-    https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/arduino-code
-    https://github.com/bluerobotics/BlueRobotics_MS5837_Library
+https://alexgyver.ru/arduino-algorithms/
+https://alexgyver.ru/lessons/parsing/
+https://alexgyver.ru/lessons/filters/
+https://github.com/GyverLibs/GyverPID
+https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/arduino-code
+https://github.com/bluerobotics/BlueRobotics_MS5837_Library
 
