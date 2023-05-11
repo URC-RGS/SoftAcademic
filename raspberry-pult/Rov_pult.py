@@ -6,40 +6,20 @@ from RovCommunication import Rov_SerialPort, Rov_SerialPort_Gebag
 from RovControl import RovController
 from RovLogging import RovLogger
 from datetime import datetime
+from pprint import pprint
 
-
-
-# # запуск на одноплатном пк rock
-# # путь до конфиг файла
+# путь до конфиг файла
 PATH_CONFIG = '/home/rock/SoftAcademic/raspberry-pult/config_pult.ini'
 
 # # путь до файлика с логами 
 PATH_LOG = '/home/rock/SoftAcademic/raspberry-pult/.log/'
 
-# запуск на одноплатном пк pi4 
-# путь до конфиг файла
-#PATH_CONFIG = '/home/pi/SoftSkatt/raspberry-pult/config_pult.ini'
 
-# путь до файлика с логами 
-#PATH_LOG = '/home/pi/SoftSkatt/raspberry-pult/log/'
-
-'''
-# запуск на ноутбуке 
-# путь до конфиг файла
-PATH_CONFIG = '/Users/yarik/Documents/SoftAcademic/raspberry-pult/config_pult.ini'
-
-# путь до файлика с логами 
-PATH_LOG =  '/Users/yarik/Documents/SoftAcademic/raspberry-pult/log/'
-'''
-
-'''
-# запуск на компьютере в офисе 
-# путь до конфиг файла
 PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/config_pult.ini'
 
-# путь до файлика с логами 
-PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/log/'
-'''
+# # путь до файлика с логами 
+PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/.log/'
+
 
 class PULT_Main:
     def __init__(self):
@@ -53,7 +33,7 @@ class PULT_Main:
         self.rov_conf = dict(self.config['RovPult'])
 
         # конфиг для логера 
-        self.log_config = {'path_log':PATH_LOG,
+        self.log_config = {'path_log': PATH_LOG,
                            'log_level': str(self.rov_conf['log_level'])}
 
         # создаем экземпляр класса отвечающий за логирование 
@@ -75,6 +55,7 @@ class PULT_Main:
         # конфиг для джойстика 
         self.joi_config = dict(self.config['JOYSTICK'])
         self.joi_config['logger'] = self.logi
+        pprint(self.joi_config)
         
         # создаем экземпляр класса отвечающий за управление и взаимодействие с джойстиком 
         self.controll_ps4 = RovController(self.joi_config)  
@@ -173,10 +154,6 @@ class PULT_Main:
 
             dataout.append(data['man'])
             
-            
-
-            #dataout.append(str(datetime.now()))
-
             # отправка пакета на аппарат 
             self.serial_port.send_data(dataout)
 
@@ -192,15 +169,6 @@ class PULT_Main:
             # TODO сделать вывод телеметрии на инжинерный экран 
             print(self.data_input)
 
-            # if util.strtobool(self.rov_conf['local_serial_debag']):
-            #     delay = datetime.now() - datetime.strptime(self.data_input[-1], '%Y-%m-%d %H:%M:%S.%f')
-            #     print(delay.total_seconds())
-            # else:
-            #     delay = datetime.now() - datetime.strptime(self.data_input[-1][3:-5], '%Y-%m-%d %H:%M:%S.%f')
-            #     print(delay.total_seconds())
-
-
-
             sleep(self.rate_command_out)
 
     def run_main(self):
@@ -208,8 +176,8 @@ class PULT_Main:
         self.ThreadJoi = threading.Thread(target=self.run_controller)
         self.ThreadCom = threading.Thread(target=self.run_command)
 
-        self.ThreadJoi.start()
-        self.ThreadCom.start()
+        # self.ThreadJoi.start()
+        # self.ThreadCom.start()
 
 
 if __name__ == '__main__':

@@ -1,0 +1,5 @@
+2023-04-25 22:28:22,214 : INFO : Start logging
+2023-04-25 22:28:22,214 : INFO : PORT: /dev/ttyAML0    BITRATE: 115200    TIMEOUT_SERIAL: 1.0
+2023-04-25 22:28:22,215 : INFO : Serial port init: {'logger': <RovLogging.RovLogger object at 0x000001DE45C38750>, 'port': '/dev/ttyAML0', 'bitrate': 115200, 'timeout': 1.0, 'debag': 1}
+2023-04-25 22:28:22,273 : INFO : Controller PS4 init
+2023-04-25 22:28:22,273 : INFO : Main post init
