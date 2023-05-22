@@ -35,7 +35,7 @@ class PULT_SerialPort:
     def __init__(self,
                  logger: PULT_Logging = PULT_Logging,
                  port: str = '/dev/ttyAML0',
-                 bitrate: int = 115200
+                 bitrate: int = 57600
                  ):
         global DEBUG
         # инициализация переменных
