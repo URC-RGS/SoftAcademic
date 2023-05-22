@@ -76,6 +76,7 @@ class PULT_SerialPort:
                 self.logger.debug('Send data: ' + str(data))
         except:
             self.logger.warning('Error send data')
+            self.serial_port.write((f'{str(data)}\n').encode())
 
 test_log = PULT_Logging()
 test_pult = PULT_SerialPort()
