@@ -84,4 +84,4 @@ if __name__ == '__main__':
     while True:
         test_pult.Control_tnpa()
         print('In', test_pult.Receiver_tnpa())
-        sleep(0.5)
+        sleep(1)
