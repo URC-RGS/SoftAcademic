@@ -29,7 +29,7 @@
         sudo nmcli dev wifi connect "wifi_name" password "wifi_password"
 
         (у нас)
-        sudo nmcli dev wifi connect R2D2 password 0987654321
+        sudo nmcli dev wifi connect URC-ROOT password 0987654321
 
         ifconfig
 
@@ -37,7 +37,7 @@
 
         sudo apt install git-all
 
-        git clone https://github.com/Yarik9008/SoftAcademic
+        git clone https://github.com/URC-RGS/SoftAcademic
 
     2) установка библиотеки для джойстика
 
@@ -90,7 +90,7 @@
 
         @reboot sleep 5 && /usr/bin/python3 /home/rock/SoftAcademic/raspberry-pult/main_pult.py &
 
-3) (опционально) настройка коофицентов движителей
+3) (опционально) настройка коэффицентов движителей
     # переходим в директорию с конфигом 
 
     cd SoftAcademic/raspberry-pult/
