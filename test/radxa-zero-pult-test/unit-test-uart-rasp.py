@@ -34,7 +34,7 @@ class PULT_Logging:
 class PULT_SerialPort:
     def __init__(self,
                  logger: PULT_Logging = PULT_Logging,
-                 port: str = 'COM4',
+                 port: str = '/dev/ttyAML0',
                  bitrate: int = 115200
                  ):
         global DEBUG
