@@ -11,7 +11,9 @@ AsyncStream<100> serial1(&Serial1, '\n');
 
 
 void setup() {
-  Serial1.begin(57600);
+  Serial.begin(115200);
+
+  Serial1.begin(115200);
   Serial1.setRX(17);
   Serial1.setTX(16);
 }
@@ -19,6 +21,6 @@ void setup() {
 void loop() {
   // если данные получены
   if (serial1.available()) {     
-    Serial.println(serial1.buf);
+    Serial1.println(serial1.buf);
   }
 }

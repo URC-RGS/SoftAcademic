@@ -47,6 +47,10 @@
 
         sudo pip3 install pyserial
 
+        sudo pip3 install coloredlogs
+
+        sudo pip3 install verboselogs
+
     3) подключение джойстика 
          
         bluetoothctl
@@ -74,8 +78,9 @@
         sudo nano /boot/uEnv.txt
 
         # заменить следующие строки 
-        overlays=meson-g12a-uart-ao-a-on-gpioao-0-gpioao-1 meson-g12a-uart-ao-b-on-gpioao-2-gpioao-3
-        console=
+console=
+overlays=meson-g12a-uart-ao-a-on-gpioao-0-gpioao-1 meson-g12a-uart-ao-b-on-gpioao-2-gpioao-3
+
 
 
     5) добавление в автозапуск 
