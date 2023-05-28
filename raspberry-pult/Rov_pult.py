@@ -12,7 +12,7 @@ from RovLogging import RovLogger
 PATH_CONFIG = '/home/rock/SoftAcademic/raspberry-pult/config_pult.ini'
 
 # # путь до файлика с логами 
-PATH_LOG = '/home/rock/SoftAcademic/raspberry-pult/log/'
+PATH_LOG = '/home/rock/SoftAcademic/raspberry-pult/.log/'
 
 # запуск на одноплатном пк pi4 
 # путь до конфиг файла
