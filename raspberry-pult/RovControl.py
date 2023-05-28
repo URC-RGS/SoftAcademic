@@ -24,7 +24,7 @@ class RovController():
         self.data_pult = {'j1_val_y': 0, 'j1_val_x': 0,
                          'j2_val_y': 0, 'j2_val_x': 0,
                          'man': 90, 'servo_cam': 90,
-                         'led': 90}
+                         'led': 0}
 
         self.camera_up = int(self.joi_config[self.joi_config['camera_up']])
 
@@ -97,16 +97,16 @@ class RovController():
                         cor_servo_cam = 1
 
                     if event.button == self.arm_up:
-                        self.data_pult['led'] = 100
+                        self.data_pult['man'] = 180
 
                     if event.button == self.arm_down:
-                        self.data_pult['led'] = 60
+                        self.data_pult['man'] = 0
 
                     if event.button == self.led_up:
-                        self.data_pult['man'] = 1
+                        self.data_pult['led'] = 180
 
                     if event.button == self.led_down:
-                        self.data_pult['man'] = 0
+                        self.data_pult['led'] = 0
 
                 if event.type == pygame.JOYBUTTONUP:
                     if event.button == self.camera_up:
