@@ -75,12 +75,13 @@ class PULT_Main:
         self.joi_config['logger'] = self.logi
         
         # конфиг учитывающий особеннсти аппарата
-        self.rov_conf = {'reverse_motor_0':util.strtobool(self.config['Rov']['reverse_motor_0']),
-                         'reverse_motor_1':util.strtobool(self.config['Rov']['reverse_motor_1']),
-                         'reverse_motor_2':util.strtobool(self.config['Rov']['reverse_motor_2']),
-                         'reverse_motor_3':util.strtobool(self.config['Rov']['reverse_motor_3']),
-                         'reverse_motor_4':util.strtobool(self.config['Rov']['reverse_motor_4']),
-                         'reverse_motor_5':util.strtobool(self.config['Rov']['reverse_motor_5'])}
+        self.rov_conf = {'motor_scheme': int(self.config['Rov']['motor_scheme']),
+                         'reverse_motor_0': util.strtobool(self.config['Rov']['reverse_motor_0']),
+                         'reverse_motor_1': util.strtobool(self.config['Rov']['reverse_motor_1']),
+                         'reverse_motor_2': util.strtobool(self.config['Rov']['reverse_motor_2']),
+                         'reverse_motor_3': util.strtobool(self.config['Rov']['reverse_motor_3']),
+                         'reverse_motor_4': util.strtobool(self.config['Rov']['reverse_motor_4']),
+                         'reverse_motor_5': util.strtobool(self.config['Rov']['reverse_motor_5'])}
         
         # создаем экземпляр класса отвечающий за управление и взаимодействие с джойстиком 
         self.controll_ps4 = RovController(self.joi_config)  
@@ -115,7 +116,7 @@ class PULT_Main:
 
         Описание протокола передачи:
             С поста управлеия:
-                [motor0, motor1, motor2, motor3, motor4, motor5, ServoCam, Arm, led0, led1]
+                [motor0, motor1, motor2, motor3, motor4, motor5, ServoCam, Arm, led0]
                 по умолчанию:
                 [50, 50, 50, 50, 50, 50, 90, 0, 0, 0]
             C аппарата:
@@ -130,28 +131,87 @@ class PULT_Main:
         def defense(value: int):
             #Функция защиты от некорректных данных§
 
-            if value > 100:
+            if value >= 100:
                 value = 100
 
-            elif value < 0:
+            elif value <= 0:
                 value = 0
                 
             return value
 
-        while True:
+        def calculation_for_three_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
             dataout = []
-            # запрос данный из класса пульта (потенциально слабое место)
-            data = self.data_pult
             
-            self.logi.debug(f'Data pult: {data}')
+            if config['reverse_motor_0']:
+                dataout.append(defense(100 - (j1_val_y - j1_val_x)))
+            else:
+                dataout.append(defense(j1_val_y - j1_val_x))
+                
+            if config['reverse_motor_1']:
+                dataout.append(defense(100 - (j1_val_y + j1_val_x)))
+            else:
+                dataout.append(defense(j1_val_y + j1_val_x))
+            
+            if config['reverse_motor_2']:
+                dataout.append(defense(100 - (j2_val_y)))
+            else:
+                dataout.append(defense(j2_val_y))
+                
+            if config['reverse_motor_3']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
 
-            j1_val_y = transformation(data['j1_val_y'])
-            j1_val_x = transformation(data['j1_val_x'])
-            j2_val_y = transformation(data['j2_val_y'])
-            j2_val_x = transformation(data['j2_val_x'])
+            if config['reverse_motor_4']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+            
+            if config['reverse_motor_5']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+                
+            return dataout
+      
+        def calculation_for_four_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
+            dataout = []
+            
+            if config['reverse_motor_0']:
+                dataout.append(defense(100 - (j1_val_y - j1_val_x)))
+            else:
+                dataout.append(defense(j1_val_y - j1_val_x))
+                
+            if config['reverse_motor_1']:
+                dataout.append(defense(100 - (j1_val_y + j1_val_x)))
+            else:
+                dataout.append(defense(j1_val_y + j1_val_x))
+            
+            if config['reverse_motor_2']:
+                dataout.append(defense(100 - (j2_val_y)))
+            else:
+                dataout.append(defense(j2_val_y))
+                
+            if config['reverse_motor_3']:
+                dataout.append(defense(100 - (j2_val_y)))
+            else:
+                dataout.append(defense(j2_val_y))
 
-            # Подготовка массива для отправки на аппарат
-            # математика преобразования значений с джойстика в значения для моторов
+            if config['reverse_motor_4']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+            
+            if config['reverse_motor_5']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+                
+            return dataout
+     
+        def calculation_for_six_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
+            dataout = []
+            
             if self.rov_conf['reverse_motor_0']:
                 dataout.append(defense(100 - (j1_val_y + j1_val_x + j2_val_x - 100)))
             else:
@@ -182,6 +242,39 @@ class PULT_Main:
             else:
                 dataout.append(defense(j2_val_y))
 
+            return dataout
+        
+        while True:
+            dataout = []
+            # запрос данный из класса пульта (потенциально слабое место)
+            data = self.data_pult
+            
+            self.logi.debug(f'Data pult: {data}')
+
+            j1_val_y = transformation(data['j1_val_y'])
+            j1_val_x = transformation(data['j1_val_x'])
+            j2_val_y = transformation(data['j2_val_y'])
+            j2_val_x = transformation(data['j2_val_x'])
+
+            # Подготовка массива для отправки на аппарат
+            # математика преобразования значений с джойстика в значения для моторов
+            # j1_val_y - вперед\назад 
+            # j1_val_x - разворот направо\налево
+            # j2_val_y - всплытие\погружение
+            # j2_val_x - не используются
+            
+            if self.rov_conf['motor_scheme'] == 3:
+                dataout = calculation_for_three_motors(self.rov_conf, j1_val_y, j1_val_x, j2_val_y, j2_val_y)
+                
+            elif self.rov_conf['motor_scheme'] == 4:
+                dataout = calculation_for_four_motors(self.rov_conf, j1_val_y, j1_val_x, j2_val_y, j2_val_y)
+                
+            elif self.rov_conf['motor_scheme'] == 6:
+                dataout = calculation_for_six_motors(self.rov_conf, j1_val_y, j1_val_x, j2_val_y, j2_val_y)
+            
+            else:
+                self.logi.critical('Error motor scheme support scheme 3, 4, 6 motors')
+                
             if data['servo_cam'] >= float(self.joi_config['max_value_cam']):
                 data['servo_cam'] = float(self.joi_config['max_value_cam'])
             if data['servo_cam'] <= float(self.joi_config['min_value_cam']):
