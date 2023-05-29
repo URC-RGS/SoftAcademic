@@ -178,14 +178,14 @@ class PULT_Main:
             dataout = []
             
             if config['reverse_motor_0']:
-                dataout.append(defense(100 - (j1_val_y - j1_val_x)))
+                dataout.append(defense(100 - (150 - j1_val_y - j1_val_x)))
             else:
-                dataout.append(defense(j1_val_y - j1_val_x))
+                dataout.append(defense(150 - j1_val_y - j1_val_x))
                 
             if config['reverse_motor_1']:
-                dataout.append(defense(100 - (j1_val_y + j1_val_x)))
+                dataout.append(defense(100 - (150 - j1_val_y + j1_val_x)))
             else:
-                dataout.append(defense(j1_val_y + j1_val_x))
+                dataout.append(defense(150 - j1_val_y + j1_val_x))
             
             if config['reverse_motor_2']:
                 dataout.append(defense(100 - (j2_val_y)))
