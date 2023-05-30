@@ -63,6 +63,7 @@ void loop() {
   if (serial.available()) {
     // парсим данные по резделителю возвращает список интов 
     GParser data = GParser(serial.buf, ' ');
+    if (DEBUG) Serial.println(serial.buf);
     int data_input[data.amount()];
     int am = data.parseInts(data_input);
 
