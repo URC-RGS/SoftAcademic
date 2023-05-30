@@ -8,6 +8,7 @@
 
 Servo servos[6];
 AsyncStream<100> serial(&Serial, '\n');
+// TODO подобрать параметры измерения вольтажа
 GKalman testFilter(10, 10, 0.1);
 uint32_t turnTimer;
 
@@ -26,10 +27,15 @@ void setup() {
   Serial1.println("Start rov");
 
   // подключаем моторы 
-  servos[0].attach(PIN_MOTOR_0, 1000, 2000, 90);
-  servos[1].attach(PIN_MOTOR_1, 1000, 2000, 90);
-  servos[2].attach(PIN_MOTOR_2, 1000, 2000, 90);
-  servos[3].attach(PIN_MOTOR_3, 1000, 2000, 90);
+  servos[0].attach(PIN_MOTOR_0, 1000, 2000);
+  servos[0].writeMicroseconds(1500);
+  servos[1].attach(PIN_MOTOR_1, 1000, 2000);
+  servos[1].writeMicroseconds(1500);
+  servos[2].attach(PIN_MOTOR_2, 1000, 2000);
+  servos[2].writeMicroseconds(1500);
+  servos[3].attach(PIN_MOTOR_3, 1000, 2000);
+  servos[3].writeMicroseconds(1500);
+
   // подключаем камеру и устанавливаем стартовое положение 
   servos[4].attach(PIN_SERVO_CAM);
   // плавно поворачиваем сервопривод в вверхнее положение 
