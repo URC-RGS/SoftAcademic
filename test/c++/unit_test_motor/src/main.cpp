@@ -87,12 +87,12 @@ boolean flag;
 
 void setup() {
   Serial.begin(9600);
-  servo.attach(0);      // подключить
-  servo.setSpeed(130);  // ограничить скорость
-  servo.setAccel(0.3);    // установить ускорение (разгон и торможение)
-  servo.setTargetDeg(100);
+  servo.attach(6, 500, 2400);      // подключить
+  servo.setSpeed(100);  // ограничить скорость
+  servo.setAccel(0.7);    // установить ускорение (разгон и торможение)
+  servo.setAutoDetach(false);
+  servo.setMaxAngle(180);
   //servo.setDirection(REVERSE);
-  servo.write(180);
 }
 
 void loop() {
@@ -109,6 +109,6 @@ void loop() {
     static bool kek = false;
     kek = !kek;
     timer = millis();
-    servo.setTargetDeg(kek ? 10 : 50);
+    servo.setTargetDeg(kek ? 0 : 180);
   }
 }
