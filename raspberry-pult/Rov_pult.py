@@ -14,12 +14,12 @@ PATH_CONFIG = '/home/rock/SoftAcademic/raspberry-pult/config_pult.ini'
 # # путь до файлика с логами 
 PATH_LOG = '/home/rock/SoftAcademic/raspberry-pult/.log/'
 
-# запуск на компьютере в офисе 
-# путь до конфиг файла
-PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/config_pult.ini'
+# # запуск на компьютере в офисе 
+# # путь до конфиг файла
+# PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/config_pult.ini'
 
-# путь до файлика с логами 
-PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/.log/'
+# # путь до файлика с логами 
+# PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/.log/'
 
 
 class PULT_Main:
