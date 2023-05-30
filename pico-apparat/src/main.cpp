@@ -1,3 +1,4 @@
+// подключаем библиотеки 
 #include <Arduino.h>
 #include <Servo.h>
 #include <GParser.h>
@@ -7,7 +8,7 @@
 
 
 Servo servos[6];
-AsyncStream<100> serial(&Serial, '\n');
+AsyncStream<100> serial(&Serial1, '\n');
 // TODO подобрать параметры измерения вольтажа
 GKalman testFilter(10, 10, 0.1);
 uint32_t turnTimer;
@@ -24,8 +25,6 @@ void setup() {
   Serial1.setTX(UART_TX);
   Serial1.begin(115200);
 
-  Serial1.println("Start rov");
-
   // подключаем моторы 
   servos[0].attach(PIN_MOTOR_0, 1000, 2000);
   servos[0].writeMicroseconds(1500);
@@ -38,15 +37,15 @@ void setup() {
 
   // подключаем камеру и устанавливаем стартовое положение 
   servos[4].attach(PIN_SERVO_CAM);
-  // плавно поворачиваем сервопривод в вверхнее положение 
+  // плавно поворачиваем сервопривод камеры в вверхнее положение 
   for (int pos = 90; pos <= 180; pos += 1) { 
     servos[4].write(pos);              
     delay(20);}
-  // плавно поворачиваем сервопривод в нижнее положение
+  // плавно поворачиваем сервопривод камеры в нижнее положение
   for (int pos = 180; pos >= 0; pos -= 1) { 
     servos[4].write(pos);              
     delay(20);}
-  // плавно поворачиваем сервопривод в среднее положение
+  // плавно поворачиваем сервопривод камеры в среднее положение
   for (int pos = 0; pos <= 90; pos += 1) { 
     servos[4].write(pos);             
     delay(20);}
@@ -74,7 +73,7 @@ void loop() {
     servos[5].write(data_input[9]);
 
     // отправка вольтажа на пост управления 
-    Serial.println(testFilter.filtered(analogRead(28)));
-
+    Serial1.println(testFilter.filtered(analogRead(28)));
+    if (DEBUG) Serial.println(testFilter.filtered(analogRead(28)));
   }  
 }
