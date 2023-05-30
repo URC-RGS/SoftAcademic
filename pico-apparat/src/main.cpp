@@ -23,7 +23,7 @@ void setup() {
   // иначе она убивает ядро и пика начинает определяться как неопознанное устройство 
   Serial1.setRX(UART_RX);
   Serial1.setTX(UART_TX);
-  Serial1.begin(9600);
+  Serial1.begin(115200);
 
   // подключаем моторы 
   servos[0].attach(PIN_MOTOR_0, 1000, 2000);
