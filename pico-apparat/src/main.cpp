@@ -8,7 +8,7 @@
 
 
 Servo servos[6];
-AsyncStream<100> serial(&Serial, '\n');
+AsyncStream<100> serial(&Serial1, '\n');
 // TODO подобрать параметры измерения вольтажа
 GKalman testFilter(10, 10, 0.1);
 uint32_t turnTimer;
@@ -23,7 +23,7 @@ void setup() {
   // иначе она убивает ядро и пика начинает определяться как неопознанное устройство 
   Serial1.setRX(UART_RX);
   Serial1.setTX(UART_TX);
-  Serial1.begin(115200);
+  Serial1.begin(9600);
 
   // подключаем моторы 
   servos[0].attach(PIN_MOTOR_0, 1000, 2000);
@@ -37,7 +37,7 @@ void setup() {
   delay(3000);
 
   // подключаем камеру и устанавливаем стартовое положение 
-  servos[4].attach(PIN_SERVO_CAM, 600, 2400);
+  servos[4].attach(PIN_SERVO_CAM);
   // плавно поворачиваем сервопривод камеры в вверхнее положение 
   for (int pos = 90; pos <= 180; pos += 1) { 
     servos[4].write(pos);              
@@ -55,7 +55,7 @@ void setup() {
   delay(500);
 
   // подключаем манипулятор
-  servos[5].attach(PIN_SERVO_ARM, 600, 2400);
+  servos[5].attach(PIN_SERVO_ARM);
 }
 
 void loop() {
