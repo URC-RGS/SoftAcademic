@@ -50,30 +50,25 @@ void setup() {
 }
 
 void loop() {
-    // если данные получены
-    if (serial.available()) {
-      // парсим данные по резделителю возвращает список интов 
-      GParser data = GParser(serial.buf, ' ');
-      int data_input[data.amount()];
-      int am = data.parseInts(data_input);
+  // если данные получены
+  if (serial.available()) {
+    // парсим данные по резделителю возвращает список интов 
+    GParser data = GParser(serial.buf, ' ');
+    int data_input[data.amount()];
+    int am = data.parseInts(data_input);
 
-      // отправляем значения на микроконтроллер 
-      servos[0].writeMicroseconds(1000 + (data_input[0] * 10));
-      servos[1].writeMicroseconds(1000 + (data_input[1] * 10));
-      servos[2].writeMicroseconds(1000 + (data_input[2] * 10));
-      servos[3].writeMicroseconds(1000 + (data_input[3] * 10));
+    // отправляем значения на микроконтроллер 
+    servos[0].writeMicroseconds(1000 + (data_input[0] * 10));
+    servos[1].writeMicroseconds(1000 + (data_input[1] * 10));
+    servos[2].writeMicroseconds(1000 + (data_input[2] * 10));
+    servos[3].writeMicroseconds(1000 + (data_input[3] * 10));
 
-      // отправляем значения на сервопривод камеры и манипулятора 
-      servos[4].write(data_input[8]);
-      servos[5].write(data_input[9]);
+    // отправляем значения на сервопривод камеры и манипулятора 
+    servos[4].write(data_input[8]);
+    servos[5].write(data_input[9]);
 
-      // отправка ответа на пост управления 
-      Serial.print(analogRead(28));
-      // Serial.print(" ");
-      Serial.println("");
+    // отправка вольтажа на пост управления 
+    Serial.println(testFilter.filtered(analogRead(28)));
 
-      }  
-  if (millis() - turnTimer >= 50) {
-    turnTimer = millis();
-    Serial.println(testFilter.filtered(analogRead(28)));}
+  }  
 }
