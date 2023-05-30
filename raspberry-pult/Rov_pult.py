@@ -14,30 +14,13 @@ PATH_CONFIG = '/home/rock/SoftAcademic/raspberry-pult/config_pult.ini'
 # # путь до файлика с логами 
 PATH_LOG = '/home/rock/SoftAcademic/raspberry-pult/.log/'
 
-# запуск на одноплатном пк pi4 
-# путь до конфиг файла
-#PATH_CONFIG = '/home/pi/SoftSkatt/raspberry-pult/config_pult.ini'
-
-# путь до файлика с логами 
-#PATH_LOG = '/home/pi/SoftSkatt/raspberry-pult/log/'
-
-'''
-# запуск на ноутбуке 
-# путь до конфиг файла
-PATH_CONFIG = '/Users/yarik/Documents/SoftAcademic/raspberry-pult/config_pult.ini'
-
-# путь до файлика с логами 
-PATH_LOG =  '/Users/yarik/Documents/SoftAcademic/raspberry-pult/log/'
-'''
-
-'''
 # запуск на компьютере в офисе 
 # путь до конфиг файла
 PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/config_pult.ini'
 
 # путь до файлика с логами 
-PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/log/'
-'''
+PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/.log/'
+
 
 class PULT_Main:
     def __init__(self):
@@ -81,7 +64,9 @@ class PULT_Main:
                          'reverse_motor_2': util.strtobool(self.config['Rov']['reverse_motor_2']),
                          'reverse_motor_3': util.strtobool(self.config['Rov']['reverse_motor_3']),
                          'reverse_motor_4': util.strtobool(self.config['Rov']['reverse_motor_4']),
-                         'reverse_motor_5': util.strtobool(self.config['Rov']['reverse_motor_5'])}
+                         'reverse_motor_5': util.strtobool(self.config['Rov']['reverse_motor_5']),
+                         'reverse_motor_6': util.strtobool(self.config['Rov']['reverse_motor_4']),
+                         'reverse_motor_7': util.strtobool(self.config['Rov']['reverse_motor_5'])}
         
         # создаем экземпляр класса отвечающий за управление и взаимодействие с джойстиком 
         self.controll_ps4 = RovController(self.joi_config)  
@@ -104,24 +89,19 @@ class PULT_Main:
         self.controll_ps4.listen()
 
     def run_command(self):
-        # запуск основного цикла 
+        # запуск основного цикла
         self.logi.info('Pult run')
+        
         '''
-        Движение вперед - (1 вперед 2 вперед 3 назад 4 назад) 
-        Движение назад - (1 назад 2 назад 3 вперед 4 вперед)
-        Движение лагом вправо - (1 назад 2 вперед 3 вперед 4 назад)
-        Движение лагом влево - (1 вперед 2 назад 3 назад 4 вперед)
-        Движение вверх - (5 вниз 6 вниз)
-        Движение вниз - (5 вверх 6 вверх)
-
         Описание протокола передачи:
             С поста управлеия:
-                [motor0, motor1, motor2, motor3, motor4, motor5, ServoCam, Arm, led0]
+                    [motor0, motor1, motor2, motor3, motor4, motor5, motor6, motor7, ServoCam, Arm, GPIO-OUT1, GPIO-OUT2]
                 по умолчанию:
-                [50, 50, 50, 50, 50, 50, 90, 0, 0, 0]
+                    [50, 50, 50, 50, 50, 50, 50, 50, 90, 90, 0, 0]
             C аппарата:
-                [напряжение(V), ток потребления(А), курс(градусы), глубина(м)]
-                [0,0,0,0]
+                    [напряжение(V), курс(градусы), глубина(м)]
+                по умолчанию:
+                    [0,0,0,0]
         '''
         def transformation(value: int):
             #Функция перевода значений АЦП с джойстика в проценты
@@ -140,17 +120,24 @@ class PULT_Main:
             return value
 
         def calculation_for_three_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
+            # Подготовка массива для отправки на аппарат
+            # математика преобразования значений с джойстика в значения для моторов
+            # j1_val_y - вперед\назад 
+            # j1_val_x - разворот направо\налево
+            # j2_val_y - всплытие\погружение
+            # j2_val_x - не используются
+            
             dataout = []
             
             if config['reverse_motor_0']:
-                dataout.append(defense(100 - (50 + (50 - j1_val_y) - (50 - j1_val_x))))
+                dataout.append(defense(50 + j1_val_y - j1_val_x))
             else:
-                dataout.append(defense(50 + (50 - j1_val_y) - (50 - j1_val_x)))
+                dataout.append(defense(50 - j1_val_y + j1_val_x))
                 
             if config['reverse_motor_1']:
-                dataout.append(defense(100 - (50 + (50 - j1_val_y) + (50 - j1_val_x))))
+                dataout.append(defense(-50 + j1_val_y + j1_val_x))
             else:
-                dataout.append(defense(50 + (50 - j1_val_y) + (50 - j1_val_x)))
+                dataout.append(defense(150 - j1_val_y - j1_val_x))
             
             if config['reverse_motor_2']:
                 dataout.append(defense(100 - (j2_val_y)))
@@ -171,21 +158,42 @@ class PULT_Main:
                 dataout.append(50)
             else:
                 dataout.append(50)
+
+            if config['reverse_motor_6']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+            
+            if config['reverse_motor_7']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+                
+            for i in range(len(dataout)):
+                dataout[i] = int(round(dataout[i]))
                 
             return dataout
       
         def calculation_for_four_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
+            
+            # Подготовка массива для отправки на аппарат
+            # математика преобразования значений с джойстика в значения для моторов
+            # j1_val_y - вперед\назад 
+            # j1_val_x - разворот направо\налево
+            # j2_val_y - всплытие\погружение
+            # j2_val_x - не используются
+                    
             dataout = []
             
             if config['reverse_motor_0']:
-                dataout.append(defense(100 - (50 + (50 - j1_val_y) - (50 - j1_val_x))))
+                dataout.append(defense(50 + j1_val_y - j1_val_x))
             else:
-                dataout.append(defense(50 + (50 - j1_val_y) - (50 - j1_val_x)))
+                dataout.append(defense(50 - j1_val_y + j1_val_x))
                 
             if config['reverse_motor_1']:
-                dataout.append(defense(100 - (50 + (50 - j1_val_y) + (50 - j1_val_x))))
+                dataout.append(defense(-50 + j1_val_y + j1_val_x))
             else:
-                dataout.append(defense(50 + (50 - j1_val_y) + (50 - j1_val_x)))
+                dataout.append(defense(150 - j1_val_y - j1_val_x))
             
             if config['reverse_motor_2']:
                 dataout.append(defense(100 - (j2_val_y)))
@@ -206,6 +214,19 @@ class PULT_Main:
                 dataout.append(50)
             else:
                 dataout.append(50)
+                
+            if config['reverse_motor_6']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+            
+            if config['reverse_motor_7']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+                
+            for i in range(len(dataout)):
+                dataout[i] = int(round(dataout[i]))
                 
             return dataout
      
@@ -242,7 +263,24 @@ class PULT_Main:
             else:
                 dataout.append(defense(j2_val_y))
 
+            if config['reverse_motor_6']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+            
+            if config['reverse_motor_7']:
+                dataout.append(50)
+            else:
+                dataout.append(50)
+                
+            for i in range(len(dataout)):
+                dataout[i] = int(round(dataout[i]))
+
             return dataout
+        
+        def calculation_for_eight_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
+            # TODO посчитать математику для векторной 8 движительной схемы 
+            pass
         
         while True:
             dataout = []
@@ -255,13 +293,6 @@ class PULT_Main:
             j1_val_x = transformation(data['j1_val_x'])
             j2_val_y = transformation(data['j2_val_y'])
             j2_val_x = transformation(data['j2_val_x'])
-
-            # Подготовка массива для отправки на аппарат
-            # математика преобразования значений с джойстика в значения для моторов
-            # j1_val_y - вперед\назад 
-            # j1_val_x - разворот направо\налево
-            # j2_val_y - всплытие\погружение
-            # j2_val_x - не используются
             
             if self.rov_conf['motor_scheme'] == 3:
                 dataout = calculation_for_three_motors(self.rov_conf, j1_val_y, j1_val_x, j2_val_y, j2_val_y)
@@ -279,38 +310,39 @@ class PULT_Main:
                 data['servo_cam'] = float(self.joi_config['max_value_cam'])
             if data['servo_cam'] <= float(self.joi_config['min_value_cam']):
                 data['servo_cam'] = float(self.joi_config['min_value_cam'])
-
-            dataout.append(data['servo_cam'])
+            
+            # необходимо привести все к int 
+            dataout.append(int(round(data['servo_cam'])))
 
             if data['man'] >= float(self.joi_config['max_value_man']):
                 data['man'] = float(self.joi_config['max_value_man'])
             if data['man'] <= float(self.joi_config['min_value_man']):
                 data['man'] = float(self.joi_config['min_value_man'])
 
-           
-
-            dataout.append(data['man'])
+            # необходимо привести все к int 
+            dataout.append(int(round(data['man'])))
             
-            dataout.append(data['led'])
-
-            #dataout.append(str(datetime.now()))
+            # необходимо привести все к int 
+            dataout.append(int(round(data['led'])))
 
             # отправка пакета на аппарат 
-            self.serial_port.send_data(dataout)
+            self.serial_port.send_data_new(dataout)
 
-            # прием данных с дитчиков с аппарата 
-            self.data_input = self.serial_port.receiver_data()
-
-            if self.data_input == None:
-                self.check_connect = False
-                self.logi.warning('Receiver data: None')
-            else:
-                self.check_connect = True
+            # # прием данных с дитчиков с аппарата 
+            self.data_input = self.serial_port.receiver_data_new()
             
-            # TODO сделать вывод телеметрии на инжинерный экран 
-            print(self.data_input)
+            self.logi.info(self.data_input)
 
-            sleep(self.rate_command_out)
+            # if self.data_input == None:
+            #     self.check_connect = False
+            #     self.logi.warning('Receiver data: None')
+            # else:
+            #     self.check_connect = True
+            
+            # # TODO сделать вывод телеметрии на инжинерный экран 
+            # print(self.data_input)
+
+            # sleep(self.rate_command_out)
 
     def run_main(self):
         '''запуск процессов опроса джойстика и основного цикла программы'''

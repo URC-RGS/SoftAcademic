@@ -3,57 +3,77 @@
 #include <GParser.h>
 #include <AsyncStream.h>
 #include <Config.h>
+#include <GyverFilters.h>
 
 
-Servo servos[8];
-AsyncStream<50> serial(&Serial, '\n');
-uint32_t servoTimer;
+Servo servos[6];
+AsyncStream<100> serial(&Serial, '\n');
+GKalman testFilter(10, 10, 0.1);
+uint32_t turnTimer;
 
 
 void setup() {
   // подключение отладочного сериала 
-  Serial.begin(9600);
+  Serial.begin(115200);
   // подключение сериала для общения с постом управления 
-  Serial1.begin(UART_SPEED);
+  // !!! ВАЖНО !!!
+  // на Serial сидит крыса и ей критично чтобы перед инициализацией были определены пины,
+  // иначе она убивает ядро и пика начинает определяться как неопознанное устройство 
   Serial1.setRX(UART_RX);
   Serial1.setTX(UART_TX);
+  Serial1.begin(115200);
+
+  Serial1.println("Start rov");
 
   // подключаем моторы 
   servos[0].attach(PIN_MOTOR_0, 1000, 2000, 90);
   servos[1].attach(PIN_MOTOR_1, 1000, 2000, 90);
   servos[2].attach(PIN_MOTOR_2, 1000, 2000, 90);
   servos[3].attach(PIN_MOTOR_3, 1000, 2000, 90);
-  servos[4].attach(PIN_MOTOR_4, 1000, 2000, 90);
-  servos[5].attach(PIN_MOTOR_5, 1000, 2000, 90);
   // подключаем камеру и устанавливаем стартовое положение 
-  servos[6].attach(PIN_SERVO_CAM);
-  servos[6].write(90);
-  // подключаем манипулятор и устанавливаем стартовое положение 
-  servos[7].attach(PIN_SERVO_ARM);
-  servos[6].write(90);
-  delay(1000);
-  Serial.println("Start ROV");
+  servos[4].attach(PIN_SERVO_CAM);
+  // плавно поворачиваем сервопривод в вверхнее положение 
+  for (int pos = 90; pos <= 180; pos += 1) { 
+    servos[4].write(pos);              
+    delay(20);}
+  // плавно поворачиваем сервопривод в нижнее положение
+  for (int pos = 180; pos >= 0; pos -= 1) { 
+    servos[4].write(pos);              
+    delay(20);}
+  // плавно поворачиваем сервопривод в среднее положение
+  for (int pos = 0; pos <= 90; pos += 1) { 
+    servos[4].write(pos);             
+    delay(20);}
 
+  // подключаем манипулятор
+  servos[5].attach(PIN_SERVO_ARM);
 }
 
 void loop() {
-    if (serial.available()) {     // если данные получены
-    GParser data = GParser(serial.buf, ' ');
-    int am = data.split();
-    if (am == 8) {
-      int pin = data.getInt(0);
-      int pwm_out = data.getInt(1);
-      if (pin > -1 and pin < 8 and pwm_out > 999 and pwm_out < 2001){
-        Serial.print("Output: ");
-        Serial.print(pin);
-        Serial.print(" PWM: ");
-        Serial.println(pwm_out);
-        // непосредственно подача шим на указанный пин
-        servos[pin].writeMicroseconds(pwm_out);
-        Serial.println("OK");} 
-      
-      else Serial.println("Error");
-      }
-    else Serial.println("Error"); 
-  }
+    // если данные получены
+    if (serial.available()) {
+      // парсим данные по резделителю возвращает список интов 
+      GParser data = GParser(serial.buf, ' ');
+      int data_input[data.amount()];
+      int am = data.parseInts(data_input);
+
+      // отправляем значения на микроконтроллер 
+      servos[0].writeMicroseconds(1000 + (data_input[0] * 10));
+      servos[1].writeMicroseconds(1000 + (data_input[1] * 10));
+      servos[2].writeMicroseconds(1000 + (data_input[2] * 10));
+      servos[3].writeMicroseconds(1000 + (data_input[3] * 10));
+
+      // отправляем значения на сервопривод камеры и манипулятора 
+      servos[4].write(data_input[8]);
+      servos[5].write(data_input[9]);
+
+      // отправка ответа на пост управления 
+      Serial.print(analogRead(28));
+      // Serial.print(" ");
+      Serial.println("");
+
+      }  
+  if (millis() - turnTimer >= 50) {
+    turnTimer = millis();
+    Serial.println(testFilter.filtered(analogRead(28)));}
 }
