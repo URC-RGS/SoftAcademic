@@ -7,7 +7,7 @@ boolean flag;
 
 void setup() {
   Serial.begin(9600);
-  servo.attach(3,500, 2400);        // подключить
+  servo.attach(6,500, 2400);        // подключить
   servo.setSpeed(130);    // ограничить скорость
   servo.setAccel(0.1);   	  // установить ускорение (разгон и торможение)
   
