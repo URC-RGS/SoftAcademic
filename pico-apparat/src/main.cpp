@@ -55,8 +55,8 @@ void setup() {
 
   // подключаем камеру и устанавливаем стартовое положение 
   servos[4].attach(PIN_SERVO_CAM, 600, 2400);
-  servos[4].setSpeed(200);
-  servos[4].setAccel(0.2);
+  servos[4].setSpeed(70);
+  servos[4].setAccel(0.7);
   // плавно поворачиваем сервопривод камеры в вверхнее положение 
   for (int pos = 90; pos <= 180; pos += 1) { 
     servos[4].setTargetDeg(pos);              
