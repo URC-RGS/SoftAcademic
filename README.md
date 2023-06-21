@@ -38,3 +38,11 @@ https://github.com/GyverLibs/GyverPID
 https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/arduino-code
 https://github.com/bluerobotics/BlueRobotics_MS5837_Library
 
+Версия 2.0 манипулятор:
+- https://wiki.iarduino.ru/page/actuator-linear/
+- https://wiki.iarduino.ru/page/current_sensor/
+- https://www.chipdip.ru/product/tps5450ddar-2
+- https://www.youtube.com/watch?v=qXS617cC6Bw&t=1s
+- https://alexgyver.ru/lessons/naked-chip/
+- https://alexgyver.ru/lessons/intro/
+

@@ -1,6 +1,0 @@
-2023-05-30 10:51:08,818 : INFO : Start logging
-2023-05-30 10:51:08,843 : INFO : Serial port init: {'logger': <RovLogging.RovLogger object at 0x00000181F25B2D10>, 'port': 'COM19', 'bitrate': 115200, 'timeout': 1.0, 'debag': 0}
-2023-05-30 10:51:09,602 : INFO : Controller PS4 init
-2023-05-30 10:51:09,602 : INFO : Main post init
-2023-05-30 10:51:09,602 : INFO : Controller PS4 listen
-2023-05-30 10:51:09,602 : INFO : Pult run
