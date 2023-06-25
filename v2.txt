@@ -42,7 +42,6 @@
 
                 - подключение зарядки происходит в тот же разьем что и хаб с полезной нагрузкой тем самым мы обеспечиваем безопастность так как вся полезная нагрузка отключена во время зарядки а следовательно не может быть включена при каких либо глюках 
 
-                - 
 
         - Кабель связка:
                 - кабель нулевой плавучисти 2 пары длиной 25 метров
@@ -96,17 +95,17 @@
 
 
 Лабораторные работы:
-        - "Hello world на языке микроконтроллеров" (мигание светодиодом)
-        - "На глубине темно - надо плавно добавить света" (подключение мосфет транзистора и плавне управление нагрузкой с помощью PWM)
-        - "Надо как-то светом управлять..." (работа с аналоговым входом и управление яркостью с помощью переменного резистора)
-        - "Не дело свет руками включать - надо автоматизировать" (автоматическое включение светильника при достижении определенного порога, работа с фоторезистором)
-        - "Как не разбирая робота убедиться в том что он не затек?" (с помощью датчика влажности будем отслеживать попадание влаги и зажигать индикаторный светодиод)
-        - "Надо больше статусных эффектов" (работа с адресной полоской светодиодов, написание различных эффектов)
-        - "А как рулить движителями?" (управление движителями с помощью потенциометра)
-        - "А что там с манипулятором и приводом камеры?" (Управление сервоприводом) 
-        - "Связь дело важное!" (Работа с сериал портом, общение двух микроконтроллеров между собой)
-        - "А что там за бортом?" (Работа с датчиком глубины, i2c интерфейс, вывод на lcd экран)
-        - "Перепишем прошивку для ТНПА?)" (опрос датчиков на одной стороне и управление сервоприводами, на второй стороне вывод на lcd экран и управление сервоприводами с помощью потенциометров)
+        1) "Hello world на языке микроконтроллеров" (мигание светодиодом)
+        2) "На глубине темно - надо плавно добавить света" (подключение мосфет транзистора и плавне управление нагрузкой с помощью PWM)
+        3) "Надо как-то светом управлять..." (работа с аналоговым входом и управление яркостью с помощью переменного резистора)
+        4) "Не дело свет руками включать - надо автоматизировать" (автоматическое включение светильника при достижении определенного порога, работа с фоторезистором)
+        5) "Как не разбирая робота убедиться в том что он не затек?" (с помощью датчика влажности будем отслеживать попадание влаги и зажигать индикаторный светодиод)
+        6) "Надо больше статусных эффектов" (работа с адресной полоской светодиодов, написание различных эффектов)
+        7) "А как рулить движителями?" (управление движителями с помощью потенциометра)
+        8) "А что там с манипулятором и приводом камеры?" (Управление сервоприводом) 
+        9) "Связь дело важное!" (Работа с сериал портом, общение двух микроконтроллеров между собой)
+        10) "А что там за бортом?" (Работа с датчиком глубины, i2c интерфейс, вывод на lcd экран)
+        11) "Перепишем прошивку для ТНПА?)" (опрос датчиков на одной стороне и управление сервоприводами, на второй стороне вывод на lcd экран и управление сервоприводами с помощью потенциометров)
 
 Аналог:
         https://amperka.ru/product/matryoshka-z-iskra
@@ -119,6 +118,7 @@
                 - провод usb c 1 шт
                 - резистор 220 ом 1 шт 
                 - светодиод 5 мм 1 шт 
+
         - Лабораторная работа 2:
                 - pi pico 1 шт
                 - макетная плата 1 шт 
@@ -128,6 +128,7 @@
                 - светодиод 5 мм 1 шт 
                 - мосфет транзистор 1 шт
                 - резистор 10 ком 1 шт
+
         - Лабораторная работа 3:
                 - pi pico 1 шт
                 - макетная плата 1 шт 
@@ -138,6 +139,7 @@
                 - мосфет транзистор 1 шт
                 - резистор 10 ком 1 шт
                 - переменный резистор 10 ком 1 шт
+
         - Лабораторная работа 4:
                 - pi pico 1 шт
                 - макетная плата 1 шт 
@@ -148,6 +150,7 @@
                 - мосфет транзистор 1 шт
                 - резистор 10 ком 1 шт
                 - фоторезистор 10 ком 1 шт
+
         - Лабораторная работа 5:
                 - pi pico 1 шт
                 - макетная плата 1 шт 
@@ -156,12 +159,77 @@
                 - резистор 220 ом 1 шт 
                 - светодиод 5 мм 1 шт 
                 - датчик влажности 1 шт
+
         - Лабораторная работа 6:
                 - pi pico 1 шт
                 - макетная плата 1 шт 
                 - провода соеденительные 
                 - провод usb c 1 шт
                 - полоска с 8 адресными светодиодами 1 шт
+
+        - Лабораторная работа 7:
+                - pi pico 1 шт
+                - макетная плата 1 шт 
+                - провода соеденительные 
+                - провод usb c 1 шт
+                - блок питания 12 вольт или аккумулятор 
+                - движитель 
+
+        - Лабораторная работа 8:
+                - pi pico 1 шт
+                - макетная плата 1 шт 
+                - провода соеденительные 
+                - провод usb c 1 шт
+                - сервопривод камеры 1 шт
+                - манипулятор или сервопривод манипулятора 1 шт
+                - блок питания 12 вольт 1 шт
+
+        - Лабораторная работа 9:
+                - pi pico 2 шт
+                - макетная плата 1 шт 
+                - провода соеденительные 
+                - провод usb c 2 шт
+
+        - Лабораторная работа 10:
+                - pi pico 1 шт
+                - макетная плата 1 шт 
+                - провода соеденительные 
+                - провод usb c 1 шт
+                - датчик глубины и температуры ms5837 1 шт 
+                - lcd экран с драйвером 1 шт
+
+        - Лабораторная работа 11:
+                - pi pico 2 шт
+                - макетная плата 2 шт 
+                - провода соеденительные 
+                - провод usb c 2 шт
+                - полоска с 8 адресными светодиодами 1 шт
+                - потенциометр 4 шт 
+                - сервопривод 1 шт 
+                - манипулятор 1 шт 
+                - lcd экран 1 шт 
+                - блок питания 12 вольт 1 шт 
         
+Список комплектующих:
+        - pi pico 2 шт https://www.ozon.ru/product/kontroller-rp2040-type-c-raspberry-pi-pico-4mb-32-bit-arm-cortex-m0-982228856/?asb2=PmOIo7rBh9DB6FUnIuHQxtwJboGzRp4n2KltTLgJmyo_ZIuVwYct6y64LhzHSh0X&avtc=1&avte=2&avts=1687518597&keywords=pi+pico&sh=9icFN5z0Zw
+        - макетный платы 2 шт https://www.ozon.ru/product/maketnaya-plata-830-tochek-pechatnaya-plata-mb-102-dlya-arduino-stm32-nodemcu-raspberry-404484506/?asb=fwrcQxweP4BcBTz4cuSBCDTPbFPrFK2XfdOos24knEs%253D&asb2=4yFm4O6UuZrC3FuBiWLwW1Q5iC47nB_o5Hv8ocUvbmF5PKhLLnuxxeGlNZG7z9mU&avtc=1&avte=2&avts=1687723906&keywords=%D0%BC%D0%B0%D0%BA%D0%B5%D1%82%D0%BD%D1%8B%D0%B5+%D0%BF%D0%BB%D0%B0%D1%82%D1%8B&sh=9icFN3G_UA
+        - макетные провода папа-папа 2 полоски https://www.ozon.ru/product/provoda-20sm-papa-papa-40-sht-297736185/?asb=vDfDX9YHpVE5FyUpd1hwNPEmwIHueo4p5Mpf983PSrcoNP73dZL0o%252BMCJSh%252FTCkj&asb2=qRZWITBOiCZig6X6EBMEf7Nc3Guch9hX97HhZbUW1qk4EseruPL95WyTvY8g5jAYQxmRCX-RJn8hiVlV20veNPTuiWg3le-v2BnvCq9UV4TY16tyCziV2-a_NDXWk1hGjuIcoLv8QCtG6-PMd8HAHw&avtc=1&avte=2&avts=1687723929&keywords=%D0%BC%D0%B0%D0%BA%D0%B5%D1%82%D0%BD%D1%8B%D0%B5+%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4%D0%B0&sh=9icFN85oUA
+        - резистор 10 ком 10 шт https://www.ozon.ru/product/rezistor-10-kom-0-25vt-100-sht-10k-cf-1-4w-5-vyvodnoy-nabor-806379906/?advert=zA2QjZZLkwuNOXYsggfy7uS_zNOMSEOpqLrJHawMq2hOnWw8KxLocdDzeoXaVXEFANYbcdqnqLqjVS4pBtrBQeTahM0-w4wpgogz1toawTFrLAhOWVrh1RyKObaxWafleRevPykG5R5jlIHSDpCAcEEhMzh5UtisJYG0RplETMX67RpnbHwHWWg8xyylVUo7QfxM1ZnLqeUHqhqwTuDZm90lhjrs_S4qEDQr_lolv2T6TUkWjMsZ8M9w6ZlHSnepLW9gd7C3zLWKxYAscqsNbP2EXR5H1vaQBsS1R1sVOUi1oH4CxsStMgY4rsGPoO3fmPJ6rpFMa2TcQrunlAmh&avtc=1&avte=2&avts=1687724013&keywords=%D1%80%D0%B5%D0%B7%D0%B8%D1%81%D1%82%D0%BE%D1%80+10+%D0%BA%D0%BE%D0%BC&sh=9icFN3qPxA
+        - резистор 220 ом 10 шт https://www.ozon.ru/product/rezistor-220-om-0-25vt-100-sht-220r-cf-1-4w-5-vyvodnoy-rezistory-nabor-817605341/?advert=ALMf4PCf-JkIbyD-L6fAWojdjFZBCsGtcr2Bfl23vPbPM8ZkL0vIf33E_Uy8Y2RAZgLMiXEEQIJ1VwRb5MI9f_MbpkozVzFDVlIk_1c0dWGGnfPOjlhVrj3joCoIJTKcGP0AR4RyCc6ybEet4pZJ3kTDRGu2q2AfS02F5gcVUmywVRw-xqVd3WTYk2cSHpVECtj36yE6tcWNbsQOyJXBiGHJonPQH1vCnnJv17d1ue7Dv2ZUJ5clM1gBETHqej2cobJtB11S1meyN5gCdAF5AI9nEzSIz8KjhWUr7AEQMKsLPHuWIp2WIK33T-BkNc90BJ4vQDYGaaEkfNvqGm6m&avtc=1&avte=2&avts=1687724080&keywords=%D1%80%D0%B5%D0%B7%D0%B8%D1%81%D1%82%D0%BE%D1%80+220+%D0%BE%D0%BC&sh=9icFN65t6Q
+        - потенциометр 10 ком 5 шт https://www.ozon.ru/product/peremennyy-rezistor-potentsiometr-16k1-na-10-kom-10-shtuk-501298542/?asb=%252FuJJT9gXj6w5acG705w2XoHJjncM8q8sqyaNzsVix%252FsvmHCXlHV5v1Uk1jAkh05p&asb2=rqNvOgq3dnE-dFNjiIzJCMb42unJh6NEkQDU6F-Hgu91ZDgAu_G4mcJcmYVEEUYCVEen4sNv2GL3SKpaRFg1tsaSybs0uY0YyrJN8PhdtpPKycPI10KCKoUdjIBun10ntFvNjHovwo4aVmeuLlbUPg&avtc=1&avte=2&avts=1687724123&keywords=%D1%80%D0%B5%D0%B7%D0%B8%D1%81%D1%82%D0%BE%D1%80+10+%D0%BA%D0%BE%D0%BC+%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9&sh=9icFN9Hmsw
+        - сервопривод малый 2 шт https://www.ozon.ru/product/servoprivod-mg90s-micro-servo-606457717/?asb=HrLjSzjxnQWSfxIB5wDlZ1ra9W7Yxz0rkcJLkfWjhSA%253D&asb2=1J83Mo_IZTEXsd1aDrZO1QCdCoe20FsWfLsPrr9wB-wBOVO31-AQjU6iTC75kHZm&avtc=1&avte=2&avts=1687724216&keywords=%D1%81%D0%B5%D1%80%D0%B2%D0%BE%D0%BF%D1%80%D0%B8%D0%B2%D0%BE%D0%B4+mg90s&sh=9icFN64dvA
+        - провод usb c 2 шт https://www.ozon.ru/product/kabel-type-c-shnur-dlya-zaryadnogo-ustroystva-1027092023/?asb2=haxGqRv8b8fh7xSM4qnq6RvlcehfOc__A7_iycSPLSuuX8su2jytCE755TzpGPPd&avtc=1&avte=2&avts=1687101390&keywords=%D0%9A%D0%B0%D0%B1%D0%B5%D0%BB%D0%B8+USB+Type-C+-+USB+Type-C&sh=9icFN4_q5Q&tab=reviews
+        - lcd экран 1 шт https://www.ozon.ru/product/zhk-ekran-displey-lcd2004-siniy-s-i2c-arduino-941564751/?asb=5RbaOYLTTArCED5tkPAy9z0FFJfTFtAeBWIhwrc4oJo%253D&asb2=v5UC2V1gNS9RbAEnhuQSkpvhtdKWnFYIPaUsLueBPAjYSSmSe7x194TpVHO6Dfup&avtc=1&avte=2&avts=1687724339&keywords=lcd+%D1%8D%D0%BA%D1%80%D0%B0%D0%BD+2004&sh=9icFNy7c8A
+        - движитель 1 шт https://aliexpress.ru/item/1005001442483830.html?spm=a2g2w.detail.pers_rcmd.10.7ea04959tzFDf9&ru_algo_pv_id=43e7c34e-6a02-4bec-8e84-42db1a1c4b77&scenario=pcDetailBottomMoreOtherSeller&sku_id=12000016132782070&tpp_rcmd_bucket_id=288670&traffic_source=recommendation
+        - манипулятор 1 шт 
+        - полоска адресных светодиодов 1 шт https://www.ozon.ru/product/modul-iz-8-rgb-svetodiodov-ws2812b-294697687/?asb=OCccBAuWJbXq78%252Fg%252BsmXB%252BHbBh2TAnU%252BYPkxseA3Xww%253D&asb2=5Sl-iOP7hxBiTbKszvAktOtHBRnAeMCqZW9qJZrSgsVDuAfB1gH1JMqrUrkIKqkZ&avtc=1&avte=2&avts=1687724506&keywords=ws2812b&sh=9icFN-69Vg
+        - блок питания 12 вольт 1 шт https://www.ozon.ru/product/blok-pitaniya-setevoy-adapter-12v-3a-12v-3a-shteker-5-5x2-5mm-876055654/?asb=O6P5UUTDOmQ1JGDBhS9nDXuf%252FtYGZiN9RNSMasN394s%253D&asb2=rgG6RegxXmMobPCZvvmLtJTIwJrEv-Yw1YCnNyrcrdzlHCSRdxMwjd7K_UeV0L1a&avtc=1&avte=2&avts=1687724528&keywords=%D0%B1%D0%BB%D0%BE%D0%BA+%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%D0%B8%D1%8F+12+%D0%B2%D0%BE%D0%BB%D1%8C%D1%82&sh=9icFN7B2DA
+        - фоторезистор 1 шт https://www.ozon.ru/product/fotorezistor-gl5506-10-shtuk-274424101/?asb=P4xK7llmk22WONz2RdMe2YQ%252Bx3L63uYOyHiXM91eswo%253D&asb2=3-J20-mM8bLRo0UV43yoIQcJfSLMAdW4CDj2oIYsoI4Zln4nKuu3be6yy7Qu2BIJ&avtc=1&avte=2&avts=1687724619&keywords=%D1%84%D0%BE%D1%82%D0%BE%D1%80%D0%B5%D0%B7%D0%B8%D1%81%D1%82%D0%BE%D1%80+10%D0%BA%D0%BE%D0%BC&sh=9icFNxQElA
+        - мосфет транзистор 1 шт https://www.ozon.ru/product/tranzistor-irf3205-mosfet-5-sht-925814782/?asb=IZxEtN10YAKGPW7taERLaMWR0OsL41mfCt9EvCjJcL4%253D&asb2=G43tgC6WpYBnv3KL6eeMdf1Gdez7MgSjc1qB-CaflCDMW6qE1j3sFafqvQSnK4fd&avtc=1&avte=2&avts=1687724683&keywords=%D0%BC%D0%BE%D1%81%D1%84%D0%B5%D1%82+%D1%82%D1%80%D0%B0%D0%BD%D0%B7%D0%B8%D1%81%D1%82%D0%BE%D1%80&sh=9icFNzSWlA
+        - светодиод 5 мм 10 шт https://www.ozon.ru/product/nabor-led-svetodiodov-5mm-10-sht-sinie-874904739/?asb=hJWhugAMT6eVDhfrbagW4vOqg%252FAxXNGe%252FcRcItieZ%252Bs%253D&asb2=DZw5jra7PGxitA3gU3EscvYEN3jAPLGxIAzVyLJk2BN_n2z4bbj7rXvPA17ZJCv-&avtc=1&avte=2&avts=1687724846&keywords=%D1%81%D0%B2%D0%B5%D1%82%D0%BE%D0%B4%D0%B8%D0%BE%D0%B4+5+%D0%BC%D0%BC&sh=9icFN9fYXQ
+        - датчик влажности 1 шт https://www.ozon.ru/product/datchik-vlazhnosti-pochvy-yl-69-fc-28-714675646/?asb=GocRkYAaZjKKncTyjJX9GynD0Mxhz1NxBofY4hwy%252BDs%253D&asb2=L0HbLwIBkD6I2jNdtC1MHxG5w6ZWAWFg5pkgz7Jsf4MydKAdpVQ5W1diA3XwcScc&avtc=1&avte=2&avts=1687724868&keywords=%D0%B4%D0%B0%D1%82%D1%87%D0%B8%D0%BA+%D0%B2%D0%BB%D0%B0%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BF%D0%BE%D1%87%D0%B2%D1%8B&sh=9icFN5Uf1g
+        - датчик глубины и температуры ms5837 1 шт https://aliexpress.ru/item/1005002634836681.html?sku_id=12000021518074000&spm=a2g2w.productlist.search_results.3.28824aa6P04QsD
+        
+
 
         
