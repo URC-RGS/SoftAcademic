@@ -9,10 +9,10 @@ from RovLogging import RovLogger
 
 # # запуск на одноплатном пк rock
 # # путь до конфиг файла
-PATH_CONFIG = '/home/rock/SoftAcademic/raspberry-pult/config_pult.ini'
+PATH_CONFIG = '/home/rock/SoftAcademic/upperAcademic/config_pult.ini'
 
 # # путь до файлика с логами 
-PATH_LOG = '/home/rock/SoftAcademic/raspberry-pult/.log/'
+PATH_LOG = '/home/rock/SoftAcademic/upperAcademic/.log/'
 
 # # запуск на компьютере в офисе 
 # # путь до конфиг файла
