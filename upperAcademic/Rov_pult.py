@@ -329,9 +329,9 @@ class PULT_Main:
             self.serial_port.send_data_new(dataout)
 
             # # прием данных с дитчиков с аппарата 
-            self.data_input = self.serial_port.receiver_data_new()
+            # self.data_input = self.serial_port.receiver_data_new()
             
-            self.logi.info(self.data_input)
+            # self.logi.info(self.data_input)
 
             # if self.data_input == None:
             #     self.check_connect = False
