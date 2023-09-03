@@ -342,7 +342,7 @@ class PULT_Main:
             # # TODO сделать вывод телеметрии на инжинерный экран 
             # print(self.data_input)
 
-            # sleep(self.rate_command_out)
+            sleep(self.rate_command_out)
 
     def run_main(self):
         '''запуск процессов опроса джойстика и основного цикла программы'''
