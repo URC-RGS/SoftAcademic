@@ -95,6 +95,10 @@ overlays=meson-g12a-uart-ao-a-on-gpioao-0-gpioao-1 meson-g12a-uart-ao-b-on-gpioa
 
         @reboot sleep 5 && /usr/bin/python3 /home/rock/SoftAcademic/raspberry-pult/main_pult.py &
 
+    6) установка и синхранизация времени
+
+        sudo timedatectl set-timezone Europe/Moscow
+
 3) (опционально) настройка коэффицентов движителей
     # переходим в директорию с конфигом 
 

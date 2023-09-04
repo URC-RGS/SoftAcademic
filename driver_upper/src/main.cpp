@@ -24,6 +24,7 @@ void setup() {
   Serial2.begin(BITRATE);
 
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(19, OUTPUT);
 }
 
 void loop() {
@@ -39,5 +40,6 @@ void loop() {
     else ledState = LOW;
 
     digitalWrite(LED_BUILTIN, ledState);
+    digitalWrite(19, ledState);
    }
 }

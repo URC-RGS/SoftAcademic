@@ -326,21 +326,7 @@ class PULT_Main:
             dataout.append(int(round(data['led'])))
 
             # отправка пакета на аппарат 
-            self.serial_port.send_data_new(dataout)
-
-            # # прием данных с дитчиков с аппарата 
-            # self.data_input = self.serial_port.receiver_data_new()
-            
-            # self.logi.info(self.data_input)
-
-            # if self.data_input == None:
-            #     self.check_connect = False
-            #     self.logi.warning('Receiver data: None')
-            # else:
-            #     self.check_connect = True
-            
-            # # TODO сделать вывод телеметрии на инжинерный экран 
-            # print(self.data_input)
+            self.serial_port.send_data(dataout)
 
             sleep(self.rate_command_out)
 
