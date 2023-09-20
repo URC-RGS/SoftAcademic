@@ -7,6 +7,6 @@ const uint16_t UART_1_TX = 8;
 
 const uint16_t BITRATE = 57600;
 
+const bool LCD_DISP = true;
 
-
-
+const bool SPEAKER = true;

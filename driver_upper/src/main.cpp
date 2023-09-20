@@ -4,10 +4,14 @@
 #include <AsyncStream.h>
 #include <Config.h>
 #include <GyverFilters.h>
+#include <LiquidCrystal_I2C.h>
 
 AsyncStream<100> serial(&Serial, '\n');
 AsyncStream<100> serial1(&Serial1, '\n');
 AsyncStream<100> serial2(&Serial2, '\n');
+
+if 
+LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
 uint32_t turnTimer;
 int ledState = LOW;
