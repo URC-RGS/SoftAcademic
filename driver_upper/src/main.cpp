@@ -10,18 +10,19 @@ AsyncStream<100> serial(&Serial, '\n');
 AsyncStream<100> serial1(&Serial1, '\n');
 AsyncStream<100> serial2(&Serial2, '\n');
 
-if 
-LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
-
 uint32_t turnTimer;
 int ledState = LOW;
 
 void setup() {
   Serial.begin(BITRATE);
 
+  // подключение сериала для общения с роботом 
   Serial1.setRX(UART_0_RX);
   Serial1.setTX(UART_0_TX);
   Serial1.begin(BITRATE);
+  pinMode(UART_COM, OUTPUT);
+  digitalWrite(UART_COM, HIGH);
+
   // подключение сериала для общения с постом управления 
   Serial2.setRX(UART_1_RX);
   Serial2.setTX(UART_1_TX);
@@ -44,6 +45,7 @@ void loop() {
     else ledState = LOW;
 
     digitalWrite(LED_BUILTIN, ledState);
-    digitalWrite(19, ledState);
+    Serial.print("good stateTimer: ");
+    Serial.println(turnTimer);
    }
 }

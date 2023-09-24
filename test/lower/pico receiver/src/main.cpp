@@ -13,8 +13,7 @@ void setup() {
 
   Serial1.setRX(UART_RX);
   Serial1.setTX(UART_TX);
-  pinMode(UART_COM, OUTPUT);
-  digitalWrite(UART_COM, LOW);
+  
   Serial1.begin(9600);
 }
 

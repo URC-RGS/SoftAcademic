@@ -93,7 +93,7 @@ overlays=meson-g12a-uart-ao-a-on-gpioao-0-gpioao-1 meson-g12a-uart-ao-b-on-gpioa
 
         # добавить с конец файла
 
-        @reboot sleep 5 && /usr/bin/python3 /home/rock/SoftAcademic/raspberry-pult/main_pult.py &
+        @reboot sleep 5 && /usr/bin/python3 /home/rock/SoftAcademic/upperAcademic/Rov_pult.py &
 
     6) установка и синхранизация времени
 

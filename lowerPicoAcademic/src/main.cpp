@@ -9,7 +9,7 @@
 
 
 ServoSmooth servos[6];
-AsyncStream<100> serial(&Serial1, '\n');
+AsyncStream<100> serialCom(&Serial1, '\n');
 // TODO подобрать параметры измерения вольтажа
 GKalman testFilter(10, 10, 0.1);
 uint32_t turnTimer;
@@ -17,14 +17,17 @@ uint32_t turnTimer;
 
 void setup() {
   // подключение отладочного сериала 
-  Serial.begin(115200);
+  Serial.begin(BITRATE);
   // подключение сериала для общения с постом управления 
   // !!! ВАЖНО !!!
   // на Serial сидит крыса и ей критично чтобы перед инициализацией были определены пины,
   // иначе она убивает ядро и пика начинает определяться как неопознанное устройство 
   Serial1.setRX(UART_RX);
   Serial1.setTX(UART_TX);
-  Serial1.begin(115200);
+  pinMode(UART_COM, OUTPUT);
+  digitalWrite(UART_COM, LOW);
+  Serial1.begin(BITRATE);
+
 
   // подключаем моторы 
   servos[0].attach(PIN_MOTOR_0, 1000, 2000);
@@ -32,26 +35,28 @@ void setup() {
   servos[0].setAccel(0.95);
   servos[0].writeMicroseconds(1500);
   servos[0].setAutoDetach(false);
+  servos[0].setDirection(REVERSE_MOTOR_0);
 
   servos[1].attach(PIN_MOTOR_1, 1000, 2000);
   servos[1].setSpeed(2000);
   servos[1].setAccel(0.95);
   servos[1].writeMicroseconds(1500);
   servos[1].setAutoDetach(false);
+  servos[1].setDirection(REVERSE_MOTOR_1);
 
   servos[2].attach(PIN_MOTOR_2, 1000, 2000);
   servos[2].setSpeed(2000);
   servos[2].setAccel(0.95);
   servos[2].writeMicroseconds(1500);
   servos[2].setAutoDetach(false);
+  servos[2].setDirection(REVERSE_MOTOR_2);
 
   servos[3].attach(PIN_MOTOR_3, 1000, 2000);
   servos[3].setSpeed(2000);
   servos[3].setAccel(0.95);
   servos[3].writeMicroseconds(1500);
   servos[3].setAutoDetach(false);
-
-  delay(3000);
+  servos[3].setDirection(REVERSE_MOTOR_3);
 
   // подключаем камеру и устанавливаем стартовое положение 
   servos[4].attach(PIN_SERVO_CAM, 600, 2400);
@@ -77,6 +82,8 @@ void setup() {
   servos[5].attach(PIN_SERVO_ARM, 600, 2400);
   servos[5].setSpeed(100);
   servos[5].setAccel(0.5);
+  // короче есть косяк со связью, пока таким образом исправляем 
+  delay(10000);
 }
 
 void loop() {
@@ -91,14 +98,14 @@ void loop() {
   }
     
   // если данные получены
-  if (serial.available()) {
+  if (serialCom.available()) {
     // парсим данные по резделителю возвращает список интов 
-    GParser data = GParser(serial.buf, ' ');
-    if (DEBUG) Serial.println(serial.buf);
+    GParser data = GParser(serialCom.buf, ' ');
+    if (DEBUG) Serial.println(serialCom.buf);
     int data_input[data.amount()];
     int am = data.parseInts(data_input);
 
-    // отправляем значения на микроконтроллер 
+    // отправляем значения на микроконтроллер
     int motor_0_out = 1000 + 500 - (500 - data_input[0] * 10);
     int motor_1_out = 1000 + (data_input[1] * 10);
     int motor_2_out = 1000 + (data_input[2] * 10);
@@ -115,7 +122,7 @@ void loop() {
 
     // отправка вольтажа на пост управления 
     // Serial1.println(testFilter.filtered(analogRead(28)));
-    Serial1.println(serial.buf);
-    if (DEBUG) Serial.println(testFilter.filtered(analogRead(28)));
+    // Serial1.println(serial.buf);
+    // if (DEBUG) Serial.println(testFilter.filtered(analogRead(28)));
   }  
 }
