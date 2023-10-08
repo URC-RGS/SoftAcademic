@@ -1,25 +1,18 @@
 import threading
-import configparser
+import json
 from time import sleep
-from distutils import util
 from RovCommunication import Rov_SerialPort, Rov_SerialPort_Gebag
 from RovControl import RovController
 from RovLogging import RovLogger
 
 
 # # запуск на одноплатном пк rock
-# # путь до конфиг файла
-PATH_CONFIG = '/home/rock/SoftAcademic/upperAcademic/config_pult.ini'
-
-# # путь до файлика с логами 
-PATH_LOG = '/home/rock/SoftAcademic/upperAcademic/.log/'
+# PATH_CONFIG = '/home/rock/SoftAcademic/upperAcademic/config_pult.ini'
+# PATH_LOG = '/home/rock/SoftAcademic/upperAcademic/.log/'
 
 # # запуск на компьютере в офисе 
-# # путь до конфиг файла
-# PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/config_pult.ini'
-
-# # путь до файлика с логами 
-# PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/raspberry-pult/.log/'
+PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/config_pult.json'
+PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/.log/'
 
 
 class PULT_Main:
@@ -28,10 +21,10 @@ class PULT_Main:
         self.data_input = []
 
         # считываем и задаем конфиги 
-        self.config = configparser.ConfigParser()
-        self.config.read(PATH_CONFIG)
+        with open(PATH_CONFIG, 'r') as self.file_config:
+            self.config = json.load(self.file_config)
 
-        self.pult_conf = dict(self.config['RovPult'])
+        self.pult_conf = self.config['RovPult']
 
         # конфиг для логера 
         self.log_config = {'path_log':PATH_LOG,
@@ -42,31 +35,31 @@ class PULT_Main:
 
         # конфиг для сериал порта 
         self.serial_config  = {'logger': self.logi,
-                                'port': str(self.pult_conf['serial_port']),
-                                'bitrate': int(self.pult_conf['bitrate']),
-                                'timeout': float(self.pult_conf['timeout_serial']),
-                                'debag' : util.strtobool(self.pult_conf['local_serial_debag'])}
+                                'port': self.pult_conf['port'],
+                                'bitrate': self.pult_conf['bitrate'],
+                                'timeout': self.pult_conf['timeout_serial'],
+                                'debag' : self.pult_conf['local_serial_debag']}
 
         # создаем экземпляр класса отвечающий за связь с аппаратом по последовательному порту
-        if util.strtobool(self.pult_conf['local_serial_debag']):
+        if self.pult_conf['local_serial_debag']:
             self.serial_port = Rov_SerialPort_Gebag(self.serial_config)
         else:
             self.serial_port = Rov_SerialPort(self.serial_config)  
 
         # конфиг для джойстика 
-        self.joi_config = dict(self.config['JOYSTICK'])
+        self.joi_config = self.config['JOYSTICK']
         self.joi_config['logger'] = self.logi
         
         # конфиг учитывающий особеннсти аппарата
-        self.rov_conf = {'motor_scheme': int(self.config['Rov']['motor_scheme']),
-                         'reverse_motor_0': util.strtobool(self.config['Rov']['reverse_motor_0']),
-                         'reverse_motor_1': util.strtobool(self.config['Rov']['reverse_motor_1']),
-                         'reverse_motor_2': util.strtobool(self.config['Rov']['reverse_motor_2']),
-                         'reverse_motor_3': util.strtobool(self.config['Rov']['reverse_motor_3']),
-                         'reverse_motor_4': util.strtobool(self.config['Rov']['reverse_motor_4']),
-                         'reverse_motor_5': util.strtobool(self.config['Rov']['reverse_motor_5']),
-                         'reverse_motor_6': util.strtobool(self.config['Rov']['reverse_motor_4']),
-                         'reverse_motor_7': util.strtobool(self.config['Rov']['reverse_motor_5'])}
+        self.rov_conf = {'motor_scheme': self.config['Rov']['motor_scheme'],
+                         'reverse_motor_0': self.config['Rov']['reverse_motor_0'],
+                         'reverse_motor_1': self.config['Rov']['reverse_motor_1'],
+                         'reverse_motor_2': self.config['Rov']['reverse_motor_2'],
+                         'reverse_motor_3': self.config['Rov']['reverse_motor_3'],
+                         'reverse_motor_4': self.config['Rov']['reverse_motor_4'],
+                         'reverse_motor_5': self.config['Rov']['reverse_motor_5'],
+                         'reverse_motor_6': self.config['Rov']['reverse_motor_4'],
+                         'reverse_motor_7': self.config['Rov']['reverse_motor_5']}
         
         # создаем экземпляр класса отвечающий за управление и взаимодействие с джойстиком 
         self.controll_ps4 = RovController(self.joi_config)  
@@ -75,7 +68,7 @@ class PULT_Main:
         self.data_pult = self.controll_ps4.data_pult
 
         # частота оптправки
-        self.rate_command_out = float(self.pult_conf['rate_command_out'])
+        self.rate_command_out = self.pult_conf['rate_command_out']
 
         # проверка подключения 
         self.check_connect = False
