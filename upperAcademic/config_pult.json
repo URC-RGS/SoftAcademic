@@ -21,15 +21,27 @@
 
         "min_value" : 0.3,
 
-        "stick_linear_x" : "",
-        "stick_linear_y" : "",
-        "stick_linear_z" : "",
+        "stick_linear_x" : "stick_jl_y",
+        "stick_linear_y" : "stick_jr_y",
+        "stick_linear_z" : "stick_jr_x",
 
-        "stick_rotate_x" : "",
-        "stick_rotate_y" : "",
-        "stick_rotate_z" : "",
+        "stick_rotate_x" : 
+        {
+            "pushbutton" : "pushbutton_options",
+            "stick" : "stick_jl_x"
+        },
+        "stick_rotate_y" : 
+        {
+            "pushbutton" : "",
+            "stick" : "stick_jl_x"
+        },
+        "stick_rotate_z" : 
+        {
+            "pushbutton" : "pushbutton_options",
+            "stick" : "stick_jl_y"
+        },
 
-        "power_linear_x" : 0.5,
+        "power_linear_x" : 0.5, 
         "power_linear_y" : 0.5,
         "power_linear_z" : 0.5,
 
@@ -52,6 +64,13 @@
         "stick_L" : 4, 
         "stick_R" : 5,
 
+        "reverse_stick_jl_x" : false,
+        "reverse_stick_jl_y" : true,
+        "reverse_stick_jr_x" : false,
+        "reverse_stick_jr_y" : true,
+        "reverse_stick_L" : false, 
+        "reverse_stick_R" : false,
+
         "pushbutton_square" : 2,
         "pushbutton_x" : 0,
         "pushbutton_circle" : 1,
@@ -71,6 +90,8 @@
 
         "camera_up" : "",
         "camera_down" : "",
+        "value_cam_min" : 0,
+        "value_cam_max" : 180,
 
         "arm_up" : "",
         "arm_down" : "",
@@ -78,8 +99,8 @@
         "led_up" : "",
         "led_down" : "",
 
-        "min_value_cam" : 0,
-        "max_value_cam" : 180
+        "stabilization_depth" : "",
+        "stabilization_course" : "",
 
     },
 
