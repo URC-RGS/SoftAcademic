@@ -4,6 +4,7 @@ from time import sleep
 from RovCommunication import Rov_SerialPort, Rov_SerialPort_Gebag
 from RovControl import RovController
 from RovLogging import RovLogger
+from pprint import pprint
 
 
 # # запуск на одноплатном пк rock
@@ -40,7 +41,7 @@ class PULT_Main:
                                 'timeout': self.pult_conf['timeout_serial'],
                                 'debag' : self.pult_conf['local_serial_debag']}
 
-        # создаем экземпляр класса отвечающий за связь с аппаратом по последовательному порту
+        # создаем экземпляр класса отвечающий за связь с аппаратом
         if self.pult_conf['local_serial_debag']:
             self.serial_port = Rov_SerialPort_Gebag(self.serial_config)
         else:
@@ -50,22 +51,11 @@ class PULT_Main:
         self.joi_config = self.config['JOYSTICK']
         self.joi_config['logger'] = self.logi
         
-        # конфиг учитывающий особеннсти аппарата
-        self.rov_conf = {'motor_scheme': self.config['Rov']['motor_scheme'],
-                         'reverse_motor_0': self.config['Rov']['reverse_motor_0'],
-                         'reverse_motor_1': self.config['Rov']['reverse_motor_1'],
-                         'reverse_motor_2': self.config['Rov']['reverse_motor_2'],
-                         'reverse_motor_3': self.config['Rov']['reverse_motor_3'],
-                         'reverse_motor_4': self.config['Rov']['reverse_motor_4'],
-                         'reverse_motor_5': self.config['Rov']['reverse_motor_5'],
-                         'reverse_motor_6': self.config['Rov']['reverse_motor_4'],
-                         'reverse_motor_7': self.config['Rov']['reverse_motor_5']}
-        
         # создаем экземпляр класса отвечающий за управление и взаимодействие с джойстиком 
         self.controll_ps4 = RovController(self.joi_config)  
 
         # подтягиваем данные с джойстика 
-        self.data_pult = self.controll_ps4.data_pult
+        self.data_pult = self.controll_ps4.value_pult
 
         # частота оптправки
         self.rate_command_out = self.pult_conf['rate_command_out']
@@ -85,17 +75,6 @@ class PULT_Main:
         # запуск основного цикла
         self.logi.info('Pult run')
         
-        '''
-        Описание протокола передачи:
-            С поста управлеия:
-                    [motor0, motor1, motor2, motor3, motor4, motor5, motor6, motor7, ServoCam, Arm, GPIO-OUT1, GPIO-OUT2]
-                по умолчанию:
-                    [50, 50, 50, 50, 50, 50, 50, 50, 90, 90, 0, 0]
-            C аппарата:
-                    [напряжение(V), курс(градусы), глубина(м)]
-                по умолчанию:
-                    [0,0,0,0]
-        '''
         def transformation(value: int):
             #Функция перевода значений АЦП с джойстика в проценты
 
@@ -115,10 +94,6 @@ class PULT_Main:
         def calculation_for_three_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
             # Подготовка массива для отправки на аппарат
             # математика преобразования значений с джойстика в значения для моторов
-            # j1_val_y - вперед\назад 
-            # j1_val_x - разворот направо\налево
-            # j2_val_y - всплытие\погружение
-            # j2_val_x - не используются
             
             dataout = []
             

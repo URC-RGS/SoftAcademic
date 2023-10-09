@@ -230,3 +230,7 @@
         - датчик влажности 1 шт https://www.ozon.ru/product/datchik-vlazhnosti-pochvy-yl-69-fc-28-714675646/?asb=GocRkYAaZjKKncTyjJX9GynD0Mxhz1NxBofY4hwy%252BDs%253D&asb2=L0HbLwIBkD6I2jNdtC1MHxG5w6ZWAWFg5pkgz7Jsf4MydKAdpVQ5W1diA3XwcScc&avtc=1&avte=2&avts=1687724868&keywords=%D0%B4%D0%B0%D1%82%D1%87%D0%B8%D0%BA+%D0%B2%D0%BB%D0%B0%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D0%B8%D0%BF%D0%BE%D1%87%D0%B2%D1%8B&sh=9icFN5Uf1g
         - датчик глубины и температуры ms5837 1 шт https://aliexpress.ru/item/1005002634836681.html?sku_id=12000021518074000&spm=a2g2w.productlist.search_results.3.28824aa6P04QsD
         
+
+Идеология по работе: 
+1) пост сугубо опрос джойстика и вывод показаний в строку
+2) робот рассчитывает 

@@ -54,13 +54,13 @@ class RovController():
         self.min_value = self.config_joi['min_value']
 
         # назначение стиков 
-        self.stick_linear_x = self.config_joi[]
-        self.stick_linear_y = self.config_joi[]
-        self.stick_linear_z = self.config_joi[]
+        self.stick_linear_x = self.config_joi['']
+        self.stick_linear_y = self.config_joi['']
+        self.stick_linear_z = self.config_joi['']
         
-        self.stick_rotate_x = self.config_joi[]
-        self.stick_rotate_y = self.config_joi[]
-        self.stick_rotate_z = self.config_joi[]
+        self.stick_rotate_x = self.config_joi['']
+        self.stick_rotate_y = self.config_joi['']
+        self.stick_rotate_z = self.config_joi['']
         
         # коэфиценты 
         self.power_linear_x = self.config_joi['']
