@@ -15,7 +15,7 @@
 
     },
 
-    "JOYSTICK" : {
+    "JOYSTICK_WIN" : {
 
         "time_sleep_joi" : 0.01,
 
@@ -68,6 +68,74 @@
 
         "l1" : 9,
         "r1" : 10,
+
+        "camera_up" : "",
+        "camera_down" : "",
+
+        "arm_up" : "",
+        "arm_down" : "",
+
+        "led_up" : "",
+        "led_down" : "",
+
+        "min_value_cam" : 0,
+        "max_value_cam" : 180
+
+    },
+
+    "JOYSTICK_LIN" : {
+
+        "time_sleep_joi" : 0.01,
+
+        "min_value" : 0.3,
+
+        "stick_linear_x" : "",
+        "stick_linear_y" : "",
+        "stick_linear_z" : "",
+
+        "stick_rotate_x" : "",
+        "stick_rotate_y" : "",
+        "stick_rotate_z" : "",
+
+        "power_linear_x" : 0.5,
+        "power_linear_y" : 0.5,
+        "power_linear_z" : 0.5,
+
+        "power_rotate_x" : 0.5,
+        "power_rotate_y" : 0.5,
+        "power_rotate_z" : 0.5,
+
+        "reverse_linear_x" : false,
+        "reverse_linear_y" : false,
+        "reverse_linear_z" : false,
+
+        "reverse_rotate_x" : false,
+        "reverse_rotate_y" : false,
+        "reverse_rotate_z" : false,
+
+        "stick_jl_x" : 0,
+        "stick_jl_y" : 1,
+        "stick_jr_x" : 3,
+        "stick_jr_y" : 4,
+        "stick_L" : 2, 
+        "stick_R" : 5,
+
+        "pushbutton_square" : 3,
+        "pushbutton_x" : 0,
+        "pushbutton_circle" : 1,
+        "pushbutton_triangle" : 2,
+
+        "pushbutton_share" : 8,
+        "pushbutton_PS" : 10,
+        "pushbutton_options" : 9,
+
+        "l1" : 4,
+        "l2" : 6,
+
+        "r1" : 5,
+        "r2" : 7,
+
+        "hat" : 0,
 
         "camera_up" : "",
         "camera_down" : "",
