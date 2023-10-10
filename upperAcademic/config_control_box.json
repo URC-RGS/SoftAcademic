@@ -1,7 +1,7 @@
 {
-    "RovPult" : {
+    "CONTROL_BOX" : {
 
-        "rate_command_out" : 0.1,
+        "sleep_time" : 0.1,
 
         "log_level" : "debug",
 
@@ -17,29 +17,9 @@
 
     "JOYSTICK_WIN" : {
 
-        "time_sleep_joi" : 0.01,
+        "sleep_time" : 0.01,
 
         "min_value" : 0.3,
-
-        "stick_linear_x" : "stick_jl_y",
-        "stick_linear_y" : "stick_jr_y",
-        "stick_linear_z" : "stick_jr_x",
-
-        "stick_rotate_x" : 
-        {
-            "pushbutton" : "pushbutton_options",
-            "stick" : "stick_jl_x"
-        },
-        "stick_rotate_y" : 
-        {
-            "pushbutton" : "",
-            "stick" : "stick_jl_x"
-        },
-        "stick_rotate_z" : 
-        {
-            "pushbutton" : "pushbutton_options",
-            "stick" : "stick_jl_y"
-        },
 
         "power_linear_x" : 0.5, 
         "power_linear_y" : 0.5,
@@ -88,13 +68,18 @@
         "l1" : 9,
         "r1" : 10,
 
+        "options_stick_jl_x" : "pushbutton_options",
+        "options_stick_jl_y" : "pushbutton_options",
+        "options_stick_jr_x" : "pushbutton_options",
+        "options_stick_jr_y" : "pushbutton_options",
+        "options_stick_L" : "pushbutton_options",
+        "options_stick_R" : "pushbutton_options",
+
         "camera_up" : "pushbutton_triangle",
         "camera_down" : "pushbutton_x",
-        "value_cam_min" : 0,
-        "value_cam_max" : 180,
 
-        "arm_up" : "pushbutton_circle",
-        "arm_down" : "pushbutton_square",
+        "gripper_up" : "pushbutton_circle",
+        "gripper_down" : "pushbutton_square",
 
         "led_check" : "l1",
 
@@ -188,6 +173,24 @@
 
         "stabilization_depth" : "pushbutton_share",
         "stabilization_course" : "pushbutton_PS"
+
+    },
+
+    "ROV" : {
+
+        "motor_scheme": 4,
+
+        "reverse_motor_0" : false,
+        "reverse_motor_1" : false,
+        "reverse_motor_2" : false,
+        "reverse_motor_3" : false,
+        "reverse_motor_4" : false,
+        "reverse_motor_5" : false,
+        "reverse_motor_6" : false,
+        "reverse_motor_7" : false,
+
+        "value_cam_min" : 0,
+        "value_cam_max" : 180
 
     }
 }

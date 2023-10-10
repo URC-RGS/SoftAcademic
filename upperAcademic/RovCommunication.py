@@ -3,22 +3,22 @@ import serial
 
 
 class Rov_SerialPort:
-    def __init__(self, serial_config:dict):
+    def __init__(self, config_serial : dict):
         '''`Класс для работы с последовательным портом'''
 
         self.check_connect = False
-        self.logi = serial_config['logger']
+        self.logi = config_serial['logger']
 
         # открытие порта
         self.serial_port = serial.Serial(
-                                        port=serial_config['port'],
-                                        baudrate=serial_config['bitrate'],
-                                        timeout=serial_config['timeout']
+                                        port=config_serial['port'],
+                                        baudrate=config_serial['bitrate'],
+                                        timeout=config_serial['timeout']
                                         )
                                         
         self.check_cor = False
 
-        self.logi.info(f'Serial port init: {serial_config}')
+        self.logi.info(f'Serial port init: {config_serial}')
 
     def receiver_data(self):
         #прием информации с аппарата
@@ -42,7 +42,7 @@ class Rov_SerialPort:
 
         return data
 
-    def send_data(self, data: list = [50, 50, 50, 50, 50, 50, 50, 50, 90, 90, 0, 0]):
+    def send_data(self, data : list):
         #отправка массива на аппарат
         try:
             data = (f'{str(data)[1:-1]}\n').replace(', ', ' ').encode()
@@ -56,17 +56,17 @@ class Rov_SerialPort:
 
 
 class Rov_SerialPort_Gebag:
-    def __init__(self, serial_config:dict):
+    def __init__(self, config_serial : dict):
         '''`Класс для работы с последовательным портом'''
         self.check_connect = False
-        self.logi = serial_config['logger']
+        self.logi = config_serial['logger']
 
         # открытие порта
-        self.logi.info(f'''PORT: {serial_config['port']}    BITRATE: {serial_config['bitrate']}    TIMEOUT_SERIAL: {serial_config['timeout']}''')
+        self.logi.info(f'''PORT: {config_serial['port']}    BITRATE: {config_serial['bitrate']}    TIMEOUT_SERIAL: {config_serial['timeout']}''')
 
         self.check_cor = False
 
-        self.logi.info(f'Serial port init: {serial_config}')
+        self.logi.info(f'Serial port init: {config_serial}')
 
     def receiver_data(self):
         #прием информации с аппарата
@@ -77,9 +77,9 @@ class Rov_SerialPort_Gebag:
             
         return data
 
-    def send_data(self, data: list = [50, 50, 50, 50, 50, 50, 90, 0, 0, 0]):
+    def send_data(self, data: list):
         #отправка массива на аппарат
-
+        
         self.logi.debug(f'Send data: {str(data)}')
 
 
