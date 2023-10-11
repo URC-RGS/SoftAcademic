@@ -13,9 +13,12 @@ AsyncStream<100> serialCom(&Serial1, '\n');
 // TODO подобрать параметры измерения вольтажа
 GKalman testFilter(10, 10, 0.1);
 uint32_t turnTimer;
+int ledState = LOW;
 
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
   // подключение отладочного сериала 
   Serial.begin(BITRATE);
   // подключение сериала для общения с постом управления 
@@ -82,6 +85,7 @@ void setup() {
   servos[5].attach(PIN_SERVO_ARM, 600, 2400);
   servos[5].setSpeed(100);
   servos[5].setAccel(0.5);
+  digitalWrite(LED_BUILTIN, LOW);
   // короче есть косяк со связью, пока таким образом исправляем 
   delay(10000);
 }
@@ -95,6 +99,14 @@ void loop() {
     servos[3].tick();
     servos[4].tick();
     servos[5].tick();
+
+    if (ledState == LOW) ledState = HIGH;
+      else ledState = LOW;
+
+    digitalWrite(LED_BUILTIN, ledState);
+    // Serial.print("good stateTimer: ");
+    // Serial.println(turnTimer);
+
   }
     
   // если данные получены

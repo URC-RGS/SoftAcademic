@@ -48,8 +48,14 @@ class RovJoystick():
         self.index_gripper_up =  self.config_joystick[self.config_joystick['arm_up']]
         self.index_gripper_down =  self.config_joystick[self.config_joystick['arm_down']]
 
-        # назначение кнопок светильника
+        # назначение кнопки светильника
         self.index_led_check = self.config_joystick[self.config_joystick['led_check']]
+        
+        # назначение кнопки автоглубины
+        self.index_stabilization_depth = self.config_joystick[self.config_joystick['stabilization_depth']]
+        
+        # назначение кнопки автокурса 
+        self.index_stabilization_course = self.config_joystick[self.config_joystick['stabilization_course']]
         
         # задержка между опросами джойстика 
         self.sleep_time = self.config_joystick['sleep_time']
@@ -78,6 +84,13 @@ class RovJoystick():
         self.check_options_stick_jr_y = False
         self.check_options_stick_L = False
         self.check_options_stick_R = False
+
+        self.reverse_stick_jl_x = self.config_joystick["reverse_stick_jl_x"]
+        self.reverse_stick_jl_y = self.config_joystick["reverse_stick_jl_y"]
+        self.reverse_stick_jr_x = self.config_joystick["reverse_stick_jr_x"]
+        self.reverse_stick_jr_y = self.config_joystick["reverse_stick_jr_y"]
+        self.reverse_stick_L = self.config_joystick["reverse_stick_L"]
+        self.reverse_stick_R = self.config_joystick["reverse_stick_R"]
         
         # коэфиценты 
         self.power_linear_x = self.config_joystick['power_linear_x']
@@ -109,21 +122,28 @@ class RovJoystick():
                 # опрос нажания кнопок
                 if event.type == pygame.JOYBUTTONDOWN:
                     
-                    # обработка камеры, либо увеличиваем на 1 градус за каждый проход, либо уменьшаем 
+                    # либо открываем (1), либо закрываем (-1), либо ничего не делаем (0)
                     if event.button == self.index_camera_up:
                         self.value['servo_cam'] = 1
+
                     elif event.button == self.index_camera_down:
                         self.value['servo_cam'] = -1
                         
-                    # обработка манипулятора, либо открываем (1), либо закрываем (-1), либо ничего не делаем (0)
+                    # либо открываем (1), либо закрываем (-1), либо ничего не делаем (0)
                     if event.button == self.index_gripper_up:
                         self.value['gripper'] = 1
+                        
                     elif event.button == self.index_gripper_down:
                         self.value['servo_cam'] = -1
 
                     if event.button == self.index_led_check:
                         self.value['led_check'] = int(not bool(self.value['led_check']))
                     
+                    if event.button == self.index_stabilization_depth:
+                        self.value['stabilization_depth'] = int(not bool(self.value['stabilization_depth']))
+                        
+                    if event.button == self.index_stabilization_course:
+                        self.value['stabilization_course'] = int(not bool(self.value['stabilization_course']))
                     
                     if event.button == self.index_options_stick_jl_x:
                         self.check_options_stick_jl_x = True
@@ -142,6 +162,7 @@ class RovJoystick():
 
                     if event.button == self.index_options_stick_R:
                         self.check_options_stick_R = True
+                        
                         
                 if event.type == pygame.JOYBUTTONUP:
                     
@@ -165,114 +186,138 @@ class RovJoystick():
                     
                     if event.button == self.index_camera_up:
                         self.value['servo_cam'] = 0
+                        
                     if event.button == self.index_camera_down:
                         self.value['servo_cam'] = 0
                         
                     if event.button == self.index_gripper_up:
                         self.value['gripper'] = 0
+                        
                     if event.button == self.index_gripper_down:
                         self.value['servo_cam'] = 0
                         
-                # опрос стиков
+                # опрос стиков с учетом дополнительного функционала 
                 if event.type == pygame.JOYAXISMOTION:
-                    # обработка линейного движения 
-                    if event.axis == self.index_options_stick_jl_x and not self.:
+                    # обработка оси X левого джойстика
+                    # основной функционал без инвертирования 
+                    if event.axis == self.index_options_stick_jl_x and not self.check_options_stick_jl_x and not self.reverse_stick_jl_x:
+                        self.value["rotate_axis_y"] = event.value 
                         
+                    # основной фунционал инвертированный 
+                    elif event.axis == self.index_options_stick_jl_x and not self.check_options_stick_jl_x and self.reverse_stick_jl_x:
+                        self.value["rotate_axis_y"] = event.value * -1
                         
-                        if abs(round(event.value, 3)) >= self.min_value and self.reverse_linear_x:
-                            self.value['linear_x'] = int(round(event.value, 3) * self.power_linear_x * -1) 
-                        
-                        elif abs(round(event.value, 3)) >= self.min_value and not self.reverse_linear_x:
-                            self.value['linear_x'] = int(round(event.value, 3) * self.power_linear_x) 
-                            
-                        else:
-                            self.value['linear_x'] = 0
-                            
-                if event.axis == self.linear_x and self.value_rotate_pushbutton_x:
-                        if abs(round(event.value, 3)) >= self.min_value and self.reverse_linear_x:
-                            self.value['linear_x'] = int(round(event.value, 3) * self.power_linear_x * -1) 
-                        
-                        elif abs(round(event.value, 3)) >= self.min_value and not self.reverse_linear_x:
-                            self.value['linear_x'] = int(round(event.value, 3) * self.power_linear_x) 
-                            
-                        else:
-                            self.value['linear_x'] = 0
+                    # дополнительный функционал без инвертирования 
+                    elif event.axis == self.index_options_stick_jl_x and self.check_options_stick_jl_x and not self.reverse_stick_jl_x:
+                        pass
                     
+                    # дополнительный функционал инвертированный 
+                    elif event.axis == self.index_options_stick_jl_x and self.check_options_stick_jl_x and self.reverse_stick_jl_x:
+                        pass
                     
-                    if event.axis == self.linear_y:
-                        if abs(round(event.value, 3)) >= self.min_value and self.reverse_linear_y:
-                            self.value['linear_y'] = int(round(event.value, 3) * self.power_linear_y * -1) 
+                    # обработка оси Y левого джойстика
+                    # основной функционал без инвертирования
+                    if event.axis == self.index_options_stick_jl_y and not self.check_options_stick_jl_y and not self.reverse_stick_jl_y:
+                        self.value["linear_axis_x"] = event.value
                         
-                        elif abs(round(event.value, 3)) >= self.min_value and not self.reverse_linear_y:
-                            self.value['linear_y'] = int(round(event.value, 3) * self.power_linear_y) 
-                            
-                        else:
-                            self.value['linear_y'] = 0
+                    # основной функционал инвертированный
+                    elif event.axis == self.index_options_stick_jl_y and not self.check_options_stick_jl_y and self.reverse_stick_jl_y:
+                        self.value["linear_axis_x"] = event.value * -1
                         
+                    # дополнительный функционал без инвертирования
+                    elif event.axis == self.index_options_stick_jl_y and self.check_options_stick_jl_y and not self.reverse_stick_jl_y:
+                        pass
                     
-                    if event.axis == self.linear_z:
-                        if abs(round(event.value, 3)) >= self.min_value and self.reverse_linear_z:
-                            self.value['linear_z'] = int(round(event.value, 3) * self.power_linear_z * -1) 
+                    # дополнительный функционал инвертированный
+                    elif event.axis == self.index_options_stick_jl_y and self.check_options_stick_jl_y and self.reverse_stick_jl_y:
+                        pass
+                    
+                    # обработка оси X правого джойстика
+                    # основной функционал без инвертирования
+                    if event.axis == self.index_options_stick_jr_x and not self.check_options_stick_jr_x and not self.reverse_stick_jr_x:
+                        self.value["linear_axis_z"] = event.value
                         
-                        elif abs(round(event.value, 3)) >= self.min_value and not self.reverse_linear_z:
-                            self.value['linear_z'] = int(round(event.value, 3) * self.power_linear_z) 
-                            
-                        else:
-                            self.value['linear_z'] = 0
-                            
-                    if event.axis == self.rotate_x:
-                        if abs(round(event.value, 3)) >= self.min_value and self.reverse_rotate_x:
-                            self.value['rotate_x'] = int(round(event.value, 3) * self.power_rotate_x * -1) 
+                    # основной функционал инвертированный
+                    elif event.axis == self.index_options_stick_jr_x and not self.check_options_stick_jr_x and self.reverse_stick_jr_x:
+                        self.value["linear_axis_z"] = event.value * -1
                         
-                        elif abs(round(event.value, 3)) >= self.min_value and not self.reverse_rotate_x:
-                            self.value['rotate_x'] = int(round(event.value, 3) * self.power_rotate_x) 
-                            
-                        else:
-                            self.value['rotate_x'] = 0
-
-                    if event.axis == self.rotate_y:
-                        if abs(round(event.value, 3)) >= self.min_value and self.reverse_rotate_x:
-                            self.value['rotate_y'] = int(round(event.value, 3) * self.power_rotate_x * -1) 
+                    # дополнительный функционал без инвертирования
+                    elif event.axis == self.index_options_stick_jr_x and self.check_options_stick_jr_x and not self.reverse_stick_jr_x:
+                        self.value["rotate_axis_x"] = event.value
+    
+                    # дополнительный функционал инвертированный
+                    elif event.axis == self.index_options_stick_jr_x and self.check_options_stick_jr_x and self.reverse_stick_jr_x:
+                        self.value["rotate_axis_x"] = event.value * -1
+                    
+                    # обработка оси Y правого джойстика
+                    # основной функционал без инвертирования
+                    if event.axis == self.index_options_stick_jr_y and not self.check_options_stick_jr_y and not self.reverse_stick_jr_y:
+                        self.value['linear_axis_y'] = event.value
                         
-                        elif abs(round(event.value, 3)) >= self.min_value and not self.reverse_rotate_x:
-                            self.value['rotate_y'] = int(round(event.value, 3) * self.power_rotate_x) 
-                            
-                        else:
-                            self.value['rotate_y'] = 0
-
-                    if event.axis == self.rotate_x:
-                        if abs(round(event.value, 3)) >= self.min_value and self.reverse_rotate_x:
-                            self.value['rotate_x'] = int(round(event.value, 3) * self.power_rotate_x * -1) 
+                    # основной функционал инвертированный
+                    elif event.axis == self.index_options_stick_jr_y and not self.check_options_stick_jr_y and self.reverse_stick_jr_y:
+                        self.value['linear_axis_y'] = event.value * -1
                         
-                        elif abs(round(event.value, 3)) >= self.min_value and not self.reverse_rotate_x:
-                            self.value['rotate_x'] = int(round(event.value, 3) * self.power_rotate_x) 
-                            
-                        else:
-                            self.value['rotate_x'] = 0
+                    # дополнительный функционал без инвертирования
+                    elif event.axis == self.index_options_stick_jr_y and self.check_options_stick_jr_y and not self.reverse_stick_jr_y:
+                        self.value["rotate_axis_z"] = event.value
 
+                    # дополнительный функционал инвертированный
+                    elif event.axis == self.index_options_stick_jr_y and self.check_options_stick_jr_y and self.reverse_stick_jr_y:
+                        self.value["rotate_axis_z"] = event.value * -1
+                        
+                    # обработка левого курка
+                    # основной функционал без инвертирования
+                    if event.axis == self.index_options_stick_L and not self.check_options_stick_L and not self.reverse_stick_L:
+                        pass
+                    
+                    # основной функционал инвертированный
+                    elif event.axis == self.index_options_stick_L and not self.check_options_stick_L and self.reverse_stick_L:
+                        pass
+                    
+                    # дополнительный функционал без инвертирования
+                    elif event.axis == self.index_options_stick_L and self.check_options_stick_L and not self.reverse_stick_L:
+                        pass
+                    
+                    # дополнительный функционал инвертированный
+                    elif event.axis == self.index_options_stick_L and self.check_options_stick_L and self.reverse_stick_L:
+                        pass
 
-
-
-                else:
-                    self.value['j1_val_y'], self.value['j2_val_y'], self.value['j1_val_x'], self.value['j2_val_x'] = 0, 0, 0, 0
-
-                # повторная инициализация джойстика после отключения
-                joysticks = []
-                for i in range(self.pygame.joystick.get_count()):
-                    joysticks.append(self.pygame.joystick.Joystick(i))
-                for self.joystick in joysticks:
-                    self.joystick.init()
-                    break
+                    # обработка правого курка
+                    # основной функционал без инвертирования
+                    if event.axis == self.index_options_stick_R and not self.check_options_stick_R and not self.reverse_stick_R:
+                        pass
+                    
+                    # основной функционал инвертированный
+                    elif event.axis == self.index_options_stick_R and not self.check_options_stick_R and self.reverse_stick_R:
+                        pass
+                    
+                    # дополнительный функционал без инвертирования
+                    elif event.axis == self.index_options_stick_R and self.check_options_stick_R and not self.reverse_stick_R:
+                        pass
+                    
+                    # дополнительный функционал инвертированный
+                    elif event.axis == self.index_options_stick_R and self.check_options_stick_R and self.reverse_stick_R:
+                        pass
                 
+                else:
+                    self.value['linear_axis_x'],
+                    self.value['linear_axis_y'],
+                    self.value['linear_axis_z'],
+                    self.value['rotate_axis_x'],
+                    self.value['rotate_axis_y'], 
+                    self.value['rotate_axis_z'] = 0, 0, 0, 0, 0, 0
+
+            # повторная инициализация джойстика 
+            joysticks = []
+            for i in range(self.pygame.joystick.get_count()):
+                joysticks.append(self.pygame.joystick.Joystick(i))
+            for self.joystick in joysticks:
+                self.joystick.init()
+                break
             
-            # проверка на корректность значений 
-            if self.value['servo_cam'] >= 180:
-                self.value['servo_cam'] = 180
-
-            elif self.value['servo_cam'] <= 0:
-                self.value['servo_cam'] = 0
-
-            sleep(self.sleep_listen)
+            # засыпаем на некоторое время между опросами 
+            sleep(self.sleep_time)
 
     def stop_listen(self):
         self.running = False
