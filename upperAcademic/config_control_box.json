@@ -34,7 +34,7 @@
         "reverse_linear_z" : false,
 
         "reverse_rotate_x" : false,
-        "reverse_rotate_y" : false,
+        "reverse_rotate_y" : true,
         "reverse_rotate_z" : false,
 
         "stick_jl_x" : 0,
@@ -107,7 +107,7 @@
         "reverse_linear_z" : false,
 
         "reverse_rotate_x" : false,
-        "reverse_rotate_y" : false,
+        "reverse_rotate_y" : true,
         "reverse_rotate_z" : false,
 
         "stick_jl_x" : 0,
