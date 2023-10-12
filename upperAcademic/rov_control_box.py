@@ -23,14 +23,11 @@ class Control_Box:
         # считываем конфиг 
         with open(PATH_CONFIG, 'r') as self.file_config:
             self.config = json.load(self.file_config)
-
         self.config_control_box = self.config['CONTROL_BOX']
 
         # конфиг для логера 
         self.config_logi = {'path_log' : PATH_LOG,
                            'log_level' : self.config_control_box['log_level']}
-
-        # создаем экземпляр класса отвечающий за логирование 
         self.logi = RovLogger(self.config_logi)
 
         # конфиг для сериал порта 
@@ -50,19 +47,20 @@ class Control_Box:
         if platform == "linux" or platform == "linux2" or platform == "darwin":
             self.config_joystick = self.config['JOYSTICK_LIN']
             self.config_joystick['logger'] = self.logi
+            self.logi.info('OC: Lin or Mac')
             
         elif platform == "win32":
             self.config_joystick = self.config['JOYSTICK_WIN']
             self.config_joystick['logger'] = self.logi
-        
-        # создаем экземпляр класса отвечающий за управление и взаимодействие с джойстиком 
+            self.logi.info('OC: Win')
+            
         self.joystick_ps4 = RovJoystick(self.config_joystick)
         
         # подтягиваем настройки для робота 
         self.config_rov = self.config['ROV']
 
         # подтягиваем начальные данные с джойстика 
-        self.value_joystick = self.joystick_ps4.value_joystick
+        self.value_joystick = self.joystick_ps4.value
 
         # частота оптправки
         self.sleep_time = self.config_control_box['sleep_time']
@@ -71,186 +69,126 @@ class Control_Box:
         self.check_connect = False
 
         self.logi.info('Control box init')
-
+        
+    # запуск прослушивания джойстика 
     def run_joystick(self):
-        # запуск прослушивания джойстика 
         self.joystick_ps4.listen()
 
     def run_controller(self):
         # запуск основного цикла
-        self.logi.info('co run')
-        
-        def math_three_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
-            # Подготовка массива для отправки на аппарат
-            # математика преобразования значений с джойстика в значения для моторов
+        self.logi.info('Controller run')
+               
+        def math_three_motors_off_PID(value_joi: dict, value_out: list):
+            # сложение векторов и преобразование в частот шим 
+            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
+            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
+            value_out[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - 1500)
+            value_out[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
+            value_out[2] = int(1500 + value_joi['linear_y'] * 500)
+
+            # математика полезной нагрузки 
+            # value_out[8] = # дописать обработку сервопривода 
+            value_out[9] = int(1500 - value_joi['gripper'] * 500)
+            value_out[10] = int(1000 + value_joi['led'] * 1000)
             
-            dataout = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500]
-            
-            if config['reverse_motor_0']:
-                dataout.append(50 + j1_val_y - j1_val_x)
-            else:
-                dataout.append(50 - j1_val_y + j1_val_x)
-                
-            if config['reverse_motor_1']:
-                dataout.append(-50 + j1_val_y + j1_val_x)
-            else:
-                dataout.append(150 - j1_val_y - j1_val_x)
-            
-            if config['reverse_motor_2']:
-                dataout.append(100 - (j2_val_y))
-            else:
-                dataout.append(j2_val_y)
-                
-            return dataout
+            return value_out
       
-        def math_four_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
+        # TODO протестировать на академике 
+        def math_four_motors_off_PID(value_joi: dict, value_out: list):
+            # сложение векторов и преобразование в частот шим 
+            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
+            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
+            value_out[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - 1500)
+            value_out[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
+            value_out[2] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
+            value_out[3] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
+            # математика полезной нагрузки 
+            # value_out[8] = # дописать обработку сервопривода 
+            value_out[9] = int(1500 - value_joi['gripper'] * 500)
+            value_out[10] = int(1000 + value_joi['led'] * 1000)
             
-            # Подготовка массива для отправки на аппарат
-            # математика преобразования значений с джойстика в значения для моторов
-            # j1_val_y - вперед\назад 
-            # j1_val_x - разворот направо\налево
-            # j2_val_y - всплытие\погружение
-            # j2_val_x - не используются
-                    
-            dataout = []
-            
-            if config['reverse_motor_0']:
-                dataout.append(50 + j1_val_y - j1_val_x)
-            else:
-                dataout.append(50 - j1_val_y + j1_val_x)
-                
-            if config['reverse_motor_1']:
-                dataout.append(-50 + j1_val_y + j1_val_x)
-            else:
-                dataout.append(150 - j1_val_y - j1_val_x)
-            
-            if config['reverse_motor_2']:
-                dataout.append(100 - (j2_val_y))
-            else:
-                dataout.append(j2_val_y)
-                
-            if config['reverse_motor_3']:
-                dataout.append(100 - (j2_val_y))
-            else:
-                dataout.append(j2_val_y)
+            return value_out
 
-            if config['reverse_motor_4']:
-                dataout.append(50)
-            else:
-                dataout.append(50)
-            
-            if config['reverse_motor_5']:
-                dataout.append(50)
-            else:
-                dataout.append(50)
-                
-            if config['reverse_motor_6']:
-                dataout.append(50)
-            else:
-                dataout.append(50)
-            
-            if config['reverse_motor_7']:
-                dataout.append(50)
-            else:
-                dataout.append(50)
-                
-            for i in range(len(dataout)):
-                dataout[i] = int(round(dataout[i]))
-                
-            return dataout
-     
-        def math_six_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
-            dataout = []
-            
-            if self.rov_conf['reverse_motor_0']:
-                dataout.append(100 - (j1_val_y + j1_val_x + j2_val_x - 100))
-            else:
-                dataout.append(j1_val_y + j1_val_x + j2_val_x - 100)
-                
-            if self.rov_conf['reverse_motor_1']:
-                dataout.append(100 - (j1_val_y - j1_val_x - j2_val_x + 100))
-            else:
-                dataout.append(j1_val_y - j1_val_x - j2_val_x + 100)
-            
-            if self.rov_conf['reverse_motor_2']:
-                dataout.append(100 - ((-1 * j1_val_y) - j1_val_x + j2_val_x + 100))
-            else:
-                dataout.append((-1 * j1_val_y) - j1_val_x + j2_val_x + 100)
-                
-            if self.rov_conf['reverse_motor_3']:
-                dataout.append(100 - ((-1 * j1_val_y) + j1_val_x - j2_val_x + 100))
-            else:
-                dataout.append((-1 * j1_val_y) + j1_val_x - j2_val_x + 100)
+        # TODO протестировать 
+        def math_six_motors_off_PID(value_joi: dict, value_out: list):  
+            # сложение векторов и преобразование в частот шим 
+            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
+            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)   
+            value_out[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) + (1500 + value_joi['linear_z'] * 500) - 3000)
+            value_out[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) - (1500 + value_joi['linear_z'] * 500) + 3000)
+            value_out[2] = int(-1 * (1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + (1500 + value_joi['linear_z'] * 500) + 3000)
+            value_out[3] = int(-1 * (1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - (1500 + value_joi['linear_z'] * 500) + 3000) 
+            value_out[4] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
+            value_out[5] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
 
-            if self.rov_conf['reverse_motor_4']:
-                dataout.append(100 - j2_val_y)
-            else:
-                dataout.append(j2_val_y)
+            # математика полезной нагрузки 
+            # value_out[8] = # дописать обработку сервопривода 
+            value_out[9] = int(1500 - value_joi['gripper'] * 500)
+            value_out[10] = int(1000 + value_joi['led'] * 1000)
             
-            if self.rov_conf['reverse_motor_5']:
-                dataout.append(100 - j2_val_y)
-            else:
-                dataout.append(j2_val_y)
-
-            if config['reverse_motor_6']:
-                dataout.append(50)
-            else:
-                dataout.append(50)
-            
-            if config['reverse_motor_7']:
-                dataout.append(50)
-            else:
-                dataout.append(50)
-                
-            for i in range(len(dataout)):
-                dataout[i] = int(round(dataout[i]))
-
-            return dataout
+            return value_out
         
-        def math_eight_motors(config,j1_val_y,j1_val_x,j2_val_y,j2_val_x):
-            # TODO посчитать математику для векторной 8 движительной схемы 
+        # TODO дописать, взять за основу протеус 
+        def math_eight_motors_off_PID(value_joi: dict, value_out: list):
             pass
         
+        def check_reverse_motor(config_rov : dict, value : list):
+            if config_rov["reverse_motor_0"]:
+                value[0] = 3000 - value[0]
+                
+            if config_rov["reverse_motor_1"]:
+                value[1] = 3000 - value[1]
+                
+            if config_rov["reverse_motor_2"]:
+                value[2] = 3000 - value[2]
+
+            if config_rov["reverse_motor_3"]:
+                value[3] = 3000 - value[3]
+
+            if config_rov["reverse_motor_4"]:
+                value[4] = 3000 - value[4]
+
+            if config_rov["reverse_motor_5"]:
+                value[5] = 3000 - value[5]
+
+            if config_rov["reverse_motor_6"]:
+                value[6] = 3000 - value[6]
+
+            if config_rov["reverse_motor_7"]:
+                value[7] = 3000 - value[7]
+            
+            return value
+                
         while True:
-            dataout = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 90, 0, 0]
+            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
+            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)   
+            self.value_out_pwm = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1000]
             
-            value = self.joystick_ps4.value_joystick
+            value_joi = self.joystick_ps4.value
+
+            self.logi.debug(f'Data pult: {value_joi}')
             
-            self.logi.debug(f'Data pult: {value}')
-            
-            if self.rov_conf['motor_scheme'] == 3:
-                dataout = math_three_motors(self.rov_conf, j1_val_y, j1_val_x, j2_val_y, j2_val_y)
+            # обработка различных схем 
+            if self.config_rov['motor_scheme'] == 3:
+                self.value_out_pwm = math_three_motors_off_PID(value_joi, self.value_out_pwm)
                 
-            elif self.rov_conf['motor_scheme'] == 4:
-                dataout = math_four_motors(self.rov_conf, j1_val_y, j1_val_x, j2_val_y, j2_val_y)
+            elif self.config_rov['motor_scheme'] == 4:
+                self.value_out_pwm = math_four_motors_off_PID(value_joi, self.value_out_pwm)
                 
-            elif self.rov_conf['motor_scheme'] == 6:
-                dataout = math_six_motors(self.rov_conf, j1_val_y, j1_val_x, j2_val_y, j2_val_y)
+            elif self.config_rov['motor_scheme'] == 6:
+                self.value_out_pwm = math_six_motors_off_PID(value_joi, self.value_out_pwm)
                 
-            elif self.rov_conf['motor_scheme'] == 6:
-                dataout = math_eight_motors(self.rov_conf, j1_val_y, j1_val_x, j2_val_y, j2_val_y)
+            elif self.config_rov['motor_scheme'] == 8:
+                self.value_out_pwm = math_eight_motors_off_PID(value_joi, self.value_out_pwm)
                         
             else:
-                self.logi.critical('Error motor scheme support scheme 3, 4, 6 motors')
-                
-            if value['servo_cam'] >= float(self.joi_config['max_value_cam']):
-                value['servo_cam'] = float(self.joi_config['max_value_cam'])
-            if value['servo_cam'] <= float(self.joi_config['min_value_cam']):
-                value['servo_cam'] = float(self.joi_config['min_value_cam'])
+                self.logi.critical('Error motor scheme support scheme 3, 4, 6, 8 motors')
             
-            # необходимо привести все к int 
-            dataout.append(int(round(value['servo_cam'])))
-
-            # необходимо привести все к int 
-            dataout.append(int(round(value['man'])))
+            self.value_out_pwm = check_reverse_motor(self.config_rov, self.value_out_pwm)
             
-            # необходимо привести все к int 
-            dataout.append(int(round(value['led'])))
+            self.serial_port.send_data(self.value_out_pwm)
 
-            # отправка пакета на аппарат 
-            self.serial_port.send_data(dataout)
-
-            sleep(self.rate_command_out)
+            sleep(self.sleep_time)
 
     def run_main(self):
         '''запуск псевдопотоков опроса джойстика и основного цикла программы'''

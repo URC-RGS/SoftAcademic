@@ -1,3 +1,0 @@
-2023-10-09 14:20:16,681 : INFO : Start logging
-2023-10-09 14:20:16,681 : INFO : PORT: /dev/ttyAML0    BITRATE: 57600    TIMEOUT_SERIAL: 1
-2023-10-09 14:20:16,681 : INFO : Serial port init: {'logger': <RovLogging.RovLogger object at 0x0000026C4267D070>, 'port': '/dev/ttyAML0', 'bitrate': 57600, 'timeout': 1, 'debag': True}
