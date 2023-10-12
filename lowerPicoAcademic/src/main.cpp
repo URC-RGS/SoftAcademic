@@ -9,7 +9,7 @@
 
 
 ServoSmooth servos[6];
-AsyncStream<100> serialCom(&Serial1, '\n');
+AsyncStream<100> serialCom(&Serial, '\n');
 // TODO подобрать параметры измерения вольтажа
 GKalman testFilter(10, 10, 0.1);
 uint32_t turnTimer;
@@ -68,8 +68,8 @@ void setup() {
   servos[5].setAccel(0.5);
   digitalWrite(LED_BUILTIN, LOW);
 
-  // короче есть косяк со связью, пока таким образом исправляем 
-  // delay(10000);
+  // инициализируем моторы 
+  delay(2000);
 }
 
 void loop() {
