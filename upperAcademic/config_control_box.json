@@ -11,7 +11,7 @@
 
         "timeout_serial" : 1,
 
-        "local_serial_debag" : true
+        "local_serial_debag" : false
 
     },
 
