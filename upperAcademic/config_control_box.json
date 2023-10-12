@@ -90,7 +90,7 @@
 
     "JOYSTICK_LIN" : {
 
-        "time_sleep_joi" : 0.01,
+        "sleep_time" : 0.01,
 
         "min_value" : 0.3,
 
