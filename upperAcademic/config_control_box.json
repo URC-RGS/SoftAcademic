@@ -174,7 +174,7 @@
         "reverse_motor_6" : false,
         "reverse_motor_7" : false,
 
-        "step_servo_cam" : 5,
+        "step_servo_cam" : 10,
         "cam_min" : 0,
         "cam_max" : 180
 

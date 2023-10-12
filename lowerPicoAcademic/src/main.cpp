@@ -108,8 +108,8 @@ void loop() {
       servos[3].setTarget(data_input[3]);
 
       // отправляем значения на сервопривод камеры и манипулятора 
-      servos[4].setTargetDeg(data_input[8]);
-      servos[5].setTargetDeg(data_input[9]);
+      servos[4].setTarget(data_input[8]);
+      // servos[5].setTarget(data_input[9]);
 
       if (FEEDBEAK){
         // ответ на пост управления, в перспективе отправка данных с датчика оринтеции 
