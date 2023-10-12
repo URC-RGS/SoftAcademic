@@ -9,12 +9,12 @@ from pprint import pprint
 
 
 # # запуск на одноплатном пк rock
-PATH_CONFIG = '/home/rock/SoftAcademic/upperAcademic/config_control_box.json'
-PATH_LOG = '/home/rock/SoftAcademic/upperAcademic/.log/'
+# PATH_CONFIG = '/home/rock/SoftAcademic/upperAcademic/config_control_box.json'
+# PATH_LOG = '/home/rock/SoftAcademic/upperAcademic/.log/'
 
 # # запуск на компьютере в офисе 
-# PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/config_control_box.json'
-# PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/.log/'
+PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/config_control_box.json'
+PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/.log/'
 
 
 class Control_Box:
@@ -42,6 +42,9 @@ class Control_Box:
             self.serial_port = Rov_SerialPort_Gebag(self.config_serial)
         else:
             self.serial_port = Rov_SerialPort(self.config_serial)  
+        
+        # подтягиваем настройки для робота 
+        self.config_rov = self.config['ROV']
 
         # конфиг для джойстика в зависимости от системы 
         if platform == "linux" or platform == "linux2" or platform == "darwin":
@@ -54,10 +57,7 @@ class Control_Box:
             self.config_joystick['logger'] = self.logi
             self.logi.info('OC: Win')
             
-        self.joystick_ps4 = RovJoystick(self.config_joystick)
-        
-        # подтягиваем настройки для робота 
-        self.config_rov = self.config['ROV']
+        self.joystick_ps4 = RovJoystick(self.config_joystick, self.config_rov)
 
         # подтягиваем начальные данные с джойстика 
         self.value_joystick = self.joystick_ps4.value
@@ -81,7 +81,6 @@ class Control_Box:
             self.value_out_pwm[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
             self.value_out_pwm[2] = int(1500 + value_joi['linear_y'] * 500)
             
-
     # TODO протестировать на академике 
     def math_four_motors_off_PID(self, value_joi: dict):
             # сложение векторов и преобразование в частот шим 
@@ -91,7 +90,6 @@ class Control_Box:
             self.value_out_pwm[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
             self.value_out_pwm[2] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
             self.value_out_pwm[3] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
-            
             
     # TODO протестировать 
     def math_six_motors_off_PID(self, value_joi: dict):  

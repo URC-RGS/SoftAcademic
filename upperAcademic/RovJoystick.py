@@ -3,14 +3,15 @@ import pygame
 from time import sleep
 
 class RovJoystick():
-    def __init__(self, config):
+    def __init__(self, config_joi, config_rov):
 
         os.environ["SDL_VIDEODRIVER"] = "dummy"
 
         self.pygame = pygame
         self.pygame.init()
 
-        self.config_joystick = config
+        self.config_joystick = config_joi
+        self.config_rov = config_rov
 
         # подключение джойтика 
         joysticks = []
@@ -20,7 +21,7 @@ class RovJoystick():
             self.joystick.init()
 
         # ссылаемся на основной обьект логера 
-        self.logi = config['logger']
+        self.logi = config_joi['logger']
 
         # текущие значение с пульта управления 
         self.value = {  
@@ -93,22 +94,22 @@ class RovJoystick():
         self.reverse_stick_R = self.config_joystick["reverse_stick_R"]
         
         # коэфиценты 
-        self.power_linear_x = self.config_joystick['power_linear_x']
-        self.power_linear_y = self.config_joystick['power_linear_y']
-        self.power_linear_z = self.config_joystick['power_linear_z']
+        self.power_linear_x = self.config_rov['power_linear_x']
+        self.power_linear_y = self.config_rov['power_linear_y']
+        self.power_linear_z = self.config_rov['power_linear_z']
         
-        self.power_rotate_x = self.config_joystick['power_rotate_x']
-        self.power_rotate_y = self.config_joystick['power_rotate_y']
-        self.power_rotate_z = self.config_joystick['power_rotate_z']
+        self.power_rotate_x = self.config_rov['power_rotate_x']
+        self.power_rotate_y = self.config_rov['power_rotate_y']
+        self.power_rotate_z = self.config_rov['power_rotate_z']
 
         # реверс управления 
-        self.reverse_linear_x = self.config_joystick['reverse_linear_x']
-        self.reverse_linear_y = self.config_joystick['reverse_linear_y']
-        self.reverse_linear_z = self.config_joystick['reverse_linear_z']
+        self.reverse_linear_x = self.config_rov['reverse_linear_x']
+        self.reverse_linear_y = self.config_rov['reverse_linear_y']
+        self.reverse_linear_z = self.config_rov['reverse_linear_z']
         
-        self.reverse_rotate_x = self.config_joystick['reverse_rotate_x']
-        self.reverse_rotate_y = self.config_joystick['reverse_rotate_y']
-        self.reverse_rotate_z = self.config_joystick['reverse_rotate_z']
+        self.reverse_rotate_x = self.config_rov['reverse_rotate_x']
+        self.reverse_rotate_y = self.config_rov['reverse_rotate_y']
+        self.reverse_rotate_z = self.config_rov['reverse_rotate_z']
 
         self.running = True
 
@@ -202,45 +203,75 @@ class RovJoystick():
                     # обработка оси X левого джойстика
                     # основной функционал без инвертирования 
                     if event.axis == self.index_stick_jl_x and (not bool(self.check_options_stick_jl_x)) and (not self.reverse_stick_jl_x):
-                        self.value["rotate_y"] = round(event.value * self.power_rotate_y, 2)
+                        if self.reverse_rotate_y:
+                            self.value["rotate_y"] = round(event.value * self.power_rotate_y * -1, 2)
+                        else:
+                            self.value["rotate_y"] = round(event.value * self.power_rotate_y, 2)
                                
                     # основной фунционал инвертированный 
                     elif event.axis == self.index_stick_jl_x and (not bool(self.check_options_stick_jl_x)) and self.reverse_stick_jl_x:
-                        self.value["rotate_y"] = round(event.value * self.power_rotate_y * -1, 2)
+                        if self.reverse_rotate_y:
+                            self.value["rotate_y"] = round(event.value * self.power_rotate_y, 2)
+                        else:
+                            self.value["rotate_y"] = round(event.value * self.power_rotate_y * -1, 2)
                         
                     # дополнительный функционал без инвертирования 
                     elif event.axis == self.index_stick_jl_x and bool(self.check_options_stick_jl_x) and (not self.reverse_stick_jl_x):
-                        self.value["rotate_x"] = round(event.value * self.power_rotate_x, 2)
+                        if self.reverse_rotate_x:
+                            self.value["rotate_x"] = round(event.value * self.power_rotate_x * -1, 2)
+                        else: 
+                            self.value["rotate_x"] = round(event.value * self.power_rotate_x, 2)
                         
                     # дополнительный функционал инвертированный 
                     elif event.axis == self.index_stick_jl_x and bool(self.check_options_stick_jl_x) and self.reverse_stick_jl_x:
-                        self.value["rotate_x"] = round(event.value * self.power_rotate_x * -1, 2)
+                        if self.reverse_rotate_x:
+                            self.value["rotate_x"] = round(event.value * self.power_rotate_x, 2)
+                        else:
+                            self.value["rotate_x"] = round(event.value * self.power_rotate_x * -1, 2)
                         
                     # обработка оси Y левого джойстика
                     # основной функционал без инвертирования
                     if event.axis == self.index_stick_jl_y and (not bool(self.check_options_stick_jl_y)) and (not self.reverse_stick_jl_y):
-                        self.value["linear_x"] = round(event.value * self.power_linear_x, 2)
+                        if self.reverse_linear_x:
+                            self.value["linear_x"] = round(event.value * self.power_linear_x * -1, 2)
+                        else:
+                            self.value["linear_x"] = round(event.value * self.power_linear_x, 2)
                         
                     # основной функционал инвертированный
                     elif event.axis == self.index_stick_jl_y and (not bool(self.check_options_stick_jl_y)) and self.reverse_stick_jl_y:
-                        self.value["linear_x"] = round(event.value * self.power_linear_x * -1, 2)
+                        if self.reverse_linear_x:
+                            self.value["linear_x"] = round(event.value * self.power_linear_x, 2)
+                        else:
+                            self.value["linear_x"] = round(event.value * self.power_linear_x * -1, 2)
                         
                     # дополнительный функционал без инвертирования
                     elif event.axis == self.index_stick_jl_y and bool(self.check_options_stick_jl_y) and (not self.reverse_stick_jl_y):
-                        self.value["rotate_z"] = round(event.value * self.power_rotate_z, 2)
+                        if self.reverse_rotate_z:
+                            self.value["rotate_z"] = round(event.value * self.power_rotate_z * -1, 2)
+                        else:
+                            self.value["rotate_z"] = round(event.value * self.power_rotate_z, 2)
                         
                     # дополнительный функционал инвертированный
                     elif event.axis == self.index_stick_jl_y and bool(self.check_options_stick_jl_y) and self.reverse_stick_jl_y:
-                        self.value["rotate_z"] = round(event.value * self.power_rotate_z * -1, 2)
+                        if self.reverse_rotate_z:
+                            self.value["rotate_z"] = round(event.value * self.power_rotate_z, 2)
+                        else:
+                            self.value["rotate_z"] = round(event.value * self.power_rotate_z * -1, 2)
                     
                     # обработка оси X правого джойстика
                     # основной функционал без инвертирования
                     if event.axis == self.index_stick_jr_x and not bool(self.check_options_stick_jr_x) and not self.reverse_stick_jr_x:
-                        self.value["linear_z"] = round(event.value * self.power_linear_z, 2)
+                        if self.reverse_linear_z:
+                            self.value["linear_z"] = round(event.value * self.power_linear_z * -1, 2)
+                        else:
+                            self.value["linear_z"] = round(event.value * self.power_linear_z, 2)
                         
                     # основной функционал инвертированный
                     elif event.axis == self.index_stick_jr_x and not bool(self.check_options_stick_jr_x) and self.reverse_stick_jr_x:
-                        self.value["linear_z"] = round(event.value * self.power_linear_z * -1, 2)
+                        if self.reverse_linear_z:
+                            self.value["linear_z"] = round(event.value * self.power_linear_z, 2)
+                        else:
+                            self.value["linear_z"] = round(event.value * self.power_linear_z * -1, 2)
                         
                     # дополнительный функционал без инвертирования
                     elif event.axis == self.index_stick_jr_x and bool(self.check_options_stick_jr_x) and not self.reverse_stick_jr_x:
@@ -253,11 +284,17 @@ class RovJoystick():
                     # обработка оси Y правого джойстика
                     # основной функционал без инвертирования
                     if event.axis == self.index_stick_jr_y and not bool(self.check_options_stick_jr_y) and not self.reverse_stick_jr_y:
-                        self.value['linear_y'] = round(event.value * self.power_linear_y, 2)
+                        if self.reverse_linear_y:
+                            self.value['linear_y'] = round(event.value * self.power_linear_y * -1, 2)
+                        else:
+                            self.value['linear_y'] = round(event.value * self.power_linear_y, 2)
                         
                     # основной функционал инвертированный
                     elif event.axis == self.index_stick_jr_y and not bool(self.check_options_stick_jr_y) and self.reverse_stick_jr_y:
-                        self.value['linear_y'] = round(event.value * self.power_linear_y * -1, 2)
+                        if self.reverse_linear_y:
+                            self.value['linear_y'] = round(event.value * self.power_linear_y, 2)
+                        else:
+                            self.value['linear_y'] = round(event.value * self.power_linear_y * -1, 2)
                         
                     # дополнительный функционал без инвертирования
                     elif event.axis == self.index_stick_jr_y and bool(self.check_options_stick_jr_y) and not self.reverse_stick_jr_y:
