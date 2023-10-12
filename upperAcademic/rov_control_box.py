@@ -9,7 +9,7 @@ from pprint import pprint
 
 
 # # запуск на одноплатном пк rock
-PATH_CONFIG = '/home/rock/SoftAcademic/upperAcademic/config_pult.ini'
+PATH_CONFIG = '/home/rock/SoftAcademic/upperAcademic/config_control_box.json'
 PATH_LOG = '/home/rock/SoftAcademic/upperAcademic/.log/'
 
 # # запуск на компьютере в офисе 
