@@ -33,11 +33,16 @@ void setup() {
 }
 
 void loop() {
-  if (serial2.available()) {     // если данные получены
-    Serial1.println(serial2.buf); // выводим их (как char*)   
+  // если данные получены
+  if (serial2.available()) {     
+
+    // выводим их (как char*)
+    Serial1.println(serial2.buf);  
+
     Serial.println(serial2.buf);   
   }
 
+  // мигалка для индикации работы 
   if (millis()- turnTimer >= 200){
     turnTimer = millis();
 
@@ -45,7 +50,5 @@ void loop() {
     else ledState = LOW;
 
     digitalWrite(LED_BUILTIN, ledState);
-    Serial.print("good stateTimer: ");
-    Serial.println(turnTimer);
    }
 }

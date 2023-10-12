@@ -1,0 +1,182 @@
+{
+    "CONTROL_BOX" : {
+
+        "sleep_time" : 0.2,
+
+        "log_level" : "debug",
+
+        "port" : "/dev/ttyAML0",
+
+        "bitrate" : 57600,
+
+        "timeout_serial" : 1,
+
+        "local_serial_debag" : true
+
+    },
+
+    "JOYSTICK_WIN" : {
+
+        "sleep_time" : 0.01,
+
+        "min_value" : 0.3,
+
+        "power_linear_x" : 1, 
+        "power_linear_y" : 1,
+        "power_linear_z" : 1,
+
+        "power_rotate_x" : 1,
+        "power_rotate_y" : 1,
+        "power_rotate_z" : 1,
+
+        "reverse_linear_x" : false,
+        "reverse_linear_y" : false,
+        "reverse_linear_z" : false,
+
+        "reverse_rotate_x" : false,
+        "reverse_rotate_y" : false,
+        "reverse_rotate_z" : false,
+
+        "stick_jl_x" : 0,
+        "stick_jl_y" : 1,
+        "stick_jr_x" : 2,
+        "stick_jr_y" : 3,
+        "stick_L" : 4, 
+        "stick_R" : 5,
+
+        "reverse_stick_jl_x" : false,
+        "reverse_stick_jl_y" : true,
+        "reverse_stick_jr_x" : false,
+        "reverse_stick_jr_y" : true,
+        "reverse_stick_L" : false, 
+        "reverse_stick_R" : false,
+
+        "pushbutton_square" : 2,
+        "pushbutton_x" : 0,
+        "pushbutton_circle" : 1,
+        "pushbutton_triangle" : 3,
+
+        "pushbutton_left" : 13,
+        "pushbutton_right" : 14,
+        "pushbutton_up" : 11,
+        "pushbutton_down" : 12,
+
+        "pushbutton_share" : 4,
+        "pushbutton_PS" : 5,
+        "pushbutton_options" : 6,
+
+        "l1" : 9,
+        "r1" : 10,
+
+        "options_stick_jl_x" : "pushbutton_options",
+        "options_stick_jl_y" : "pushbutton_options",
+        "options_stick_jr_x" : "pushbutton_options",
+        "options_stick_jr_y" : "pushbutton_options",
+        "options_stick_L" : "pushbutton_options",
+        "options_stick_R" : "pushbutton_options",
+
+        "camera_up" : "pushbutton_triangle",
+        "camera_down" : "pushbutton_x",
+
+        "gripper_up" : "pushbutton_circle",
+        "gripper_down" : "pushbutton_square",
+
+        "led_check" : "l1",
+
+        "stabilization_depth" : "pushbutton_share",
+        "stabilization_course" : "pushbutton_PS"
+
+    },
+
+    "JOYSTICK_LIN" : {
+
+        "time_sleep_joi" : 0.01,
+
+        "min_value" : 0.3,
+
+        "power_linear_x" : 1, 
+        "power_linear_y" : 1,
+        "power_linear_z" : 1,
+
+        "power_rotate_x" : 1,
+        "power_rotate_y" : 1,
+        "power_rotate_z" : 1,
+
+        "reverse_linear_x" : false,
+        "reverse_linear_y" : false,
+        "reverse_linear_z" : false,
+
+        "reverse_rotate_x" : false,
+        "reverse_rotate_y" : false,
+        "reverse_rotate_z" : false,
+
+        "stick_jl_x" : 0,
+        "stick_jl_y" : 1,
+        "stick_jr_x" : 3,
+        "stick_jr_y" : 4,
+        "stick_L" : 2, 
+        "stick_R" : 5,
+
+        "reverse_stick_jl_x" : false,
+        "reverse_stick_jl_y" : true,
+        "reverse_stick_jr_x" : false,
+        "reverse_stick_jr_y" : true,
+        "reverse_stick_L" : false, 
+        "reverse_stick_R" : false,
+
+        "pushbutton_square" : 3,
+        "pushbutton_x" : 0,
+        "pushbutton_circle" : 1,
+        "pushbutton_triangle" : 2,
+
+        "pushbutton_share" : 8,
+        "pushbutton_PS" : 10,
+        "pushbutton_options" : 9,
+
+        "l1" : 4,
+        "l2" : 6,
+
+        "r1" : 5,
+        "r2" : 7,
+
+        "hat" : 0,
+
+        "options_stick_jl_x" : "pushbutton_options",
+        "options_stick_jl_y" : "pushbutton_options",
+        "options_stick_jr_x" : "pushbutton_options",
+        "options_stick_jr_y" : "pushbutton_options",
+        "options_stick_L" : "pushbutton_options",
+        "options_stick_R" : "pushbutton_options",
+        
+        "camera_up" : "pushbutton_triangle",
+        "camera_down" : "pushbutton_x",
+
+        "gripper_up" : "pushbutton_circle",
+        "gripper_down" : "pushbutton_square",
+
+        "led_check" : "l1",
+
+        "stabilization_depth" : "pushbutton_share",
+        "stabilization_course" : "pushbutton_PS"
+
+    },
+
+    "ROV" : {
+
+        "motor_scheme": 3,
+
+        "reverse_motor_0" : false,
+        "reverse_motor_1" : false,
+        "reverse_motor_2" : false,
+        "reverse_motor_3" : false,
+        "reverse_motor_4" : false,
+        "reverse_motor_5" : false,
+        "reverse_motor_6" : false,
+        "reverse_motor_7" : false,
+
+        "step_servo_cam" : 5,
+        "cam_min" : 0,
+        "cam_max" : 180
+
+    }
+}
