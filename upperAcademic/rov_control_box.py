@@ -64,127 +64,137 @@ class Control_Box:
 
         # частота оптправки
         self.sleep_time = self.config_control_box['sleep_time']
+        
+        # массив частот pwm для отправки на аппарат 
+        self.value_out_pwm = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1000]
 
         # флаг проверки подключения 
         self.check_connect = False
 
-        self.logi.info('Control box init')
+        self.logi.info('Control box init')    
+
+    def math_three_motors_off_PID(self, value_joi: dict):
+            # сложение векторов и преобразование в частот шим 
+            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
+            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
+            self.value_out_pwm[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - 1500)
+            self.value_out_pwm[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
+            self.value_out_pwm[2] = int(1500 + value_joi['linear_y'] * 500)
+
+            # математика полезной нагрузки
+            self.value_out_pwm[8] =  self.value_out_pwm[8] + value_joi['servo_cam'] * 5 * self.config_rov['step_servo_cam']
+            if self.value_out_pwm[8] <= 1000:
+                self.value_out_pwm[8] = 1000
+            elif self.value_out_pwm[8] >= 2000:
+                self.value_out_pwm[8] = 2000
+                
+            self.value_out_pwm[9] = int(1500 - value_joi['gripper'] * 500)
+            self.value_out_pwm[10] = int(1000 + value_joi['led'] * 1000)
+
+    # TODO протестировать на академике 
+    def math_four_motors_off_PID(self, value_joi: dict):
+            # сложение векторов и преобразование в частот шим 
+            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
+            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
+            self.value_out_pwm[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - 1500)
+            self.value_out_pwm[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
+            self.value_out_pwm[2] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
+            self.value_out_pwm[3] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
+            
+            # математика полезной нагрузки 
+            self.value_out_pwm[8] =  self.value_out_pwm[8] + value_joi['servo_cam'] * 5 * self.config_rov['step_servo_cam']
+            if self.value_out_pwm[8] <= 1000:
+                self.value_out_pwm[8] = 1000
+            elif self.value_out_pwm[8] >= 2000:
+                self.value_out_pwm[8] = 2000 
+                
+            self.value_out_pwm[9] = int(1500 - value_joi['gripper'] * 500)
+            self.value_out_pwm[10] = int(1000 + value_joi['led'] * 1000)
+            
+    # TODO протестировать 
+    def math_six_motors_off_PID(self, value_joi: dict):  
+            # сложение векторов и преобразование в частот шим 
+            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
+            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)   
+            self.value_out_pwm[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) + (1500 + value_joi['linear_z'] * 500) - 3000)
+            self.value_out_pwm[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) - (1500 + value_joi['linear_z'] * 500) + 3000)
+            self.value_out_pwm[2] = int(-1 * (1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + (1500 + value_joi['linear_z'] * 500) + 3000)
+            self.value_out_pwm[3] = int(-1 * (1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - (1500 + value_joi['linear_z'] * 500) + 3000) 
+            self.value_out_pwm[4] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
+            self.value_out_pwm[5] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
+
+            # математика полезной нагрузки 
+            self.value_out_pwm[8] =  self.value_out_pwm[8] + value_joi['servo_cam'] * 5 * self.config_rov['step_servo_cam']
+            if self.value_out_pwm[8] <= 1000:
+                self.value_out_pwm[8] = 1000
+            elif self.value_out_pwm[8] >= 2000:
+                self.value_out_pwm[8] = 2000 
+                
+            self.value_out_pwm[9] = int(1500 - value_joi['gripper'] * 500)
+            self.value_out_pwm[10] = int(1000 + value_joi['led'] * 1000)
         
+    # TODO дописать, взять за основу протеус 
+    def math_eight_motors_off_PID(self, value_joi: dict):
+            pass
+    
+    # реверс управления моторов при необходимости
+    def check_reverse_motor(self):
+            if self.config_rov["reverse_motor_0"]:
+                self.value_out_pwm[0] = 3000 - self.value_out_pwm[0]
+                
+            if self.config_rov["reverse_motor_1"]:
+                self.value_out_pwm[1] = 3000 - self.value_out_pwm[1]
+                
+            if self.config_rov["reverse_motor_2"]:
+                self.value_out_pwm[2] = 3000 - self.value_out_pwm[2]
+
+            if self.config_rov["reverse_motor_3"]:
+                self.value_out_pwm[3] = 3000 - self.value_out_pwm[3]
+
+            if self.config_rov["reverse_motor_4"]:
+                self.value_out_pwm[4] = 3000 - self.value_out_pwm[4]
+
+            if self.config_rov["reverse_motor_5"]:
+                self.value_out_pwm[5] = 3000 - self.value_out_pwm[5]
+
+            if self.config_rov["reverse_motor_6"]:
+                self.value_out_pwm[6] = 3000 - self.value_out_pwm[6]
+
+            if self.config_rov["reverse_motor_7"]:
+                self.value_out_pwm[7] = 3000 - self.value_out_pwm[7]
+
     # запуск прослушивания джойстика 
     def run_joystick(self):
         self.joystick_ps4.listen()
 
     def run_controller(self):
         # запуск основного цикла
-        self.logi.info('Controller run')
-               
-        def math_three_motors_off_PID(value_joi: dict, value_out: list):
-            # сложение векторов и преобразование в частот шим 
-            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
-            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
-            value_out[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - 1500)
-            value_out[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
-            value_out[2] = int(1500 + value_joi['linear_y'] * 500)
-
-            # математика полезной нагрузки 
-            # value_out[8] = # дописать обработку сервопривода 
-            value_out[9] = int(1500 - value_joi['gripper'] * 500)
-            value_out[10] = int(1000 + value_joi['led'] * 1000)
+        self.logi.info('Controller run')     
             
-            return value_out
-      
-        # TODO протестировать на академике 
-        def math_four_motors_off_PID(value_joi: dict, value_out: list):
-            # сложение векторов и преобразование в частот шим 
-            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
-            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
-            value_out[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - 1500)
-            value_out[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
-            value_out[2] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
-            value_out[3] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
-            # математика полезной нагрузки 
-            # value_out[8] = # дописать обработку сервопривода 
-            value_out[9] = int(1500 - value_joi['gripper'] * 500)
-            value_out[10] = int(1000 + value_joi['led'] * 1000)
-            
-            return value_out
-
-        # TODO протестировать 
-        def math_six_motors_off_PID(value_joi: dict, value_out: list):  
-            # сложение векторов и преобразование в частот шим 
-            # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
-            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)   
-            value_out[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) + (1500 + value_joi['linear_z'] * 500) - 3000)
-            value_out[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) - (1500 + value_joi['linear_z'] * 500) + 3000)
-            value_out[2] = int(-1 * (1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + (1500 + value_joi['linear_z'] * 500) + 3000)
-            value_out[3] = int(-1 * (1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - (1500 + value_joi['linear_z'] * 500) + 3000) 
-            value_out[4] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
-            value_out[5] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
-
-            # математика полезной нагрузки 
-            # value_out[8] = # дописать обработку сервопривода 
-            value_out[9] = int(1500 - value_joi['gripper'] * 500)
-            value_out[10] = int(1000 + value_joi['led'] * 1000)
-            
-            return value_out
-        
-        # TODO дописать, взять за основу протеус 
-        def math_eight_motors_off_PID(value_joi: dict, value_out: list):
-            pass
-        
-        def check_reverse_motor(config_rov : dict, value : list):
-            if config_rov["reverse_motor_0"]:
-                value[0] = 3000 - value[0]
-                
-            if config_rov["reverse_motor_1"]:
-                value[1] = 3000 - value[1]
-                
-            if config_rov["reverse_motor_2"]:
-                value[2] = 3000 - value[2]
-
-            if config_rov["reverse_motor_3"]:
-                value[3] = 3000 - value[3]
-
-            if config_rov["reverse_motor_4"]:
-                value[4] = 3000 - value[4]
-
-            if config_rov["reverse_motor_5"]:
-                value[5] = 3000 - value[5]
-
-            if config_rov["reverse_motor_6"]:
-                value[6] = 3000 - value[6]
-
-            if config_rov["reverse_motor_7"]:
-                value[7] = 3000 - value[7]
-            
-            return value
-                
         while True:
             # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
-            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)   
-            self.value_out_pwm = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1000]
-            
+            # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
             value_joi = self.joystick_ps4.value
 
             self.logi.debug(f'Data pult: {value_joi}')
             
             # обработка различных схем 
             if self.config_rov['motor_scheme'] == 3:
-                self.value_out_pwm = math_three_motors_off_PID(value_joi, self.value_out_pwm)
+                self.math_three_motors_off_PID(value_joi)
                 
             elif self.config_rov['motor_scheme'] == 4:
-                self.value_out_pwm = math_four_motors_off_PID(value_joi, self.value_out_pwm)
+                self.math_four_motors_off_PID(value_joi)
                 
             elif self.config_rov['motor_scheme'] == 6:
-                self.value_out_pwm = math_six_motors_off_PID(value_joi, self.value_out_pwm)
+                self.math_six_motors_off_PID(value_joi)
                 
             elif self.config_rov['motor_scheme'] == 8:
-                self.value_out_pwm = math_eight_motors_off_PID(value_joi, self.value_out_pwm)
+                self.math_eight_motors_off_PID(value_joi)
                         
             else:
                 self.logi.critical('Error motor scheme support scheme 3, 4, 6, 8 motors')
             
-            self.value_out_pwm = check_reverse_motor(self.config_rov, self.value_out_pwm)
+            self.check_reverse_motor()
             
             self.serial_port.send_data(self.value_out_pwm)
 

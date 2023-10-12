@@ -1,5 +1,7 @@
 const bool DEBUG = true;
 
+const bool FEEDBEAK = false;
+
 // подключение моторов 
 const uint16_t PIN_MOTOR_0 = 0;
 const uint16_t PIN_MOTOR_1 = 1;
