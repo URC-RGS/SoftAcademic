@@ -9,7 +9,7 @@
 
 
 ServoSmooth servos[6];
-AsyncStream<100> serialCom(&Serial, '\n');
+AsyncStream<100> serialCom(&Serial1, '\n');
 // TODO подобрать параметры измерения вольтажа
 GKalman testFilter(10, 10, 0.1);
 uint32_t turnTimer;

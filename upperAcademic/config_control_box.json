@@ -163,7 +163,7 @@
 
     "ROV" : {
 
-        "motor_scheme": 3,
+        "motor_scheme": 4,
 
         "reverse_motor_0" : false,
         "reverse_motor_1" : false,
