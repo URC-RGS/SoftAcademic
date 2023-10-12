@@ -21,13 +21,13 @@
 
         "min_value" : 0.3,
 
-        "power_linear_x" : 0.5, 
+        "power_linear_x" : 0.35, 
         "power_linear_y" : 0.5,
         "power_linear_z" : 0.5,
 
         "power_rotate_x" : 0.2,
         "power_rotate_y" : 0.2,
-        "power_rotate_z" : 0.2,
+        "power_rotate_z" : 0.4,
 
         "reverse_linear_x" : false,
         "reverse_linear_y" : false,
@@ -44,7 +44,7 @@
         "stick_L" : 4, 
         "stick_R" : 5,
 
-        "reverse_stick_jl_x" : false,
+        "reverse_stick_jl_x" : true,
         "reverse_stick_jl_y" : true,
         "reverse_stick_jr_x" : false,
         "reverse_stick_jr_y" : true,
@@ -94,13 +94,13 @@
 
         "min_value" : 0.1,
 
-        "power_linear_x" : 0.5, 
+        "power_linear_x" : 0.35, 
         "power_linear_y" : 0.5,
         "power_linear_z" : 0.5,
 
         "power_rotate_x" : 0.2,
         "power_rotate_y" : 0.2,
-        "power_rotate_z" : 0.2,
+        "power_rotate_z" : 0.4,
 
         "reverse_linear_x" : false,
         "reverse_linear_y" : false,
@@ -117,7 +117,7 @@
         "stick_L" : 2, 
         "stick_R" : 5,
 
-        "reverse_stick_jl_x" : false,
+        "reverse_stick_jl_x" : true,
         "reverse_stick_jl_y" : true,
         "reverse_stick_jr_x" : false,
         "reverse_stick_jr_y" : true,
