@@ -1,7 +1,7 @@
 {
     "CONTROL_BOX" : {
 
-        "sleep_time" : 0.2,
+        "sleep_time" : 0.05,
 
         "log_level" : "debug",
 
@@ -92,7 +92,7 @@
 
         "sleep_time" : 0.01,
 
-        "min_value" : 0.3,
+        "min_value" : 0.1,
 
         "power_linear_x" : 1, 
         "power_linear_y" : 1,
@@ -175,8 +175,12 @@
         "reverse_motor_7" : false,
 
         "step_servo_cam" : 10,
-        "cam_min" : 0,
-        "cam_max" : 180
+        "cam_min" : 1000,
+        "cam_max" : 2000,
+
+        "step_gripper" : 10,
+        "gripper_min" : 1000,
+        "gripper_max" : 2000
 
     }
 }

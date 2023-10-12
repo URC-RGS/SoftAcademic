@@ -9,12 +9,12 @@ from pprint import pprint
 
 
 # # запуск на одноплатном пк rock
-PATH_CONFIG = '/home/rock/SoftAcademic/upperAcademic/config_control_box.json'
-PATH_LOG = '/home/rock/SoftAcademic/upperAcademic/.log/'
+# PATH_CONFIG = '/home/rock/SoftAcademic/upperAcademic/config_control_box.json'
+# PATH_LOG = '/home/rock/SoftAcademic/upperAcademic/.log/'
 
 # # запуск на компьютере в офисе 
-# PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/config_control_box.json'
-# PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/.log/'
+PATH_CONFIG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/config_control_box.json'
+PATH_LOG = 'C:/Users/Yarik/Documents/SoftAcademic/upperAcademic/.log/'
 
 
 class Control_Box:
@@ -80,16 +80,7 @@ class Control_Box:
             self.value_out_pwm[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - 1500)
             self.value_out_pwm[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
             self.value_out_pwm[2] = int(1500 + value_joi['linear_y'] * 500)
-
-            # математика полезной нагрузки
-            self.value_out_pwm[8] =  self.value_out_pwm[8] + value_joi['servo_cam'] * 5 * self.config_rov['step_servo_cam']
-            if self.value_out_pwm[8] <= 1000:
-                self.value_out_pwm[8] = 1000
-            elif self.value_out_pwm[8] >= 2000:
-                self.value_out_pwm[8] = 2000
-                
-            self.value_out_pwm[9] = int(1500 - value_joi['gripper'] * 500)
-            self.value_out_pwm[10] = int(1000 + value_joi['led'] * 1000)
+            
 
     # TODO протестировать на академике 
     def math_four_motors_off_PID(self, value_joi: dict):
@@ -101,15 +92,6 @@ class Control_Box:
             self.value_out_pwm[2] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
             self.value_out_pwm[3] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
             
-            # математика полезной нагрузки 
-            self.value_out_pwm[8] =  self.value_out_pwm[8] + value_joi['servo_cam'] * 5 * self.config_rov['step_servo_cam']
-            if self.value_out_pwm[8] <= 1000:
-                self.value_out_pwm[8] = 1000
-            elif self.value_out_pwm[8] >= 2000:
-                self.value_out_pwm[8] = 2000 
-                
-            self.value_out_pwm[9] = int(1500 - value_joi['gripper'] * 500)
-            self.value_out_pwm[10] = int(1000 + value_joi['led'] * 1000)
             
     # TODO протестировать 
     def math_six_motors_off_PID(self, value_joi: dict):  
@@ -122,17 +104,7 @@ class Control_Box:
             self.value_out_pwm[3] = int(-1 * (1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - (1500 + value_joi['linear_z'] * 500) + 3000) 
             self.value_out_pwm[4] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
             self.value_out_pwm[5] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
-
-            # математика полезной нагрузки 
-            self.value_out_pwm[8] =  self.value_out_pwm[8] + value_joi['servo_cam'] * 5 * self.config_rov['step_servo_cam']
-            if self.value_out_pwm[8] <= 1000:
-                self.value_out_pwm[8] = 1000
-            elif self.value_out_pwm[8] >= 2000:
-                self.value_out_pwm[8] = 2000 
-                
-            self.value_out_pwm[9] = int(1500 - value_joi['gripper'] * 500)
-            self.value_out_pwm[10] = int(1000 + value_joi['led'] * 1000)
-        
+            
     # TODO дописать, взять за основу протеус 
     def math_eight_motors_off_PID(self, value_joi: dict):
             pass
@@ -176,7 +148,7 @@ class Control_Box:
             # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
             value_joi = self.joystick_ps4.value
 
-            self.logi.debug(f'Data pult: {value_joi}')
+            # self.logi.debug(f'Data pult: {value_joi}')
             
             # обработка различных схем 
             if self.config_rov['motor_scheme'] == 3:
@@ -195,6 +167,22 @@ class Control_Box:
                 self.logi.critical('Error motor scheme support scheme 3, 4, 6, 8 motors')
             
             self.check_reverse_motor()
+            
+            # математика полезной нагрузки 
+            self.value_out_pwm[8] =  self.value_out_pwm[8] + value_joi['servo_cam'] * 5 * self.config_rov['step_servo_cam']
+            if self.value_out_pwm[8] <= 1000:
+                self.value_out_pwm[8] = 1000
+            elif self.value_out_pwm[8] >= 2000:
+                self.value_out_pwm[8] = 2000 
+                
+            # self.value_out_pwm[9] = int(1500 - value_joi['gripper'] * 500)
+            self.value_out_pwm[9] =  self.value_out_pwm[9] + value_joi['gripper'] * 5 * self.config_rov['step_gripper']
+            if self.value_out_pwm[9] <= 1000:
+                self.value_out_pwm[9] = 1000
+            elif self.value_out_pwm[9] >= 2000:
+                self.value_out_pwm[9] = 2000 
+                
+            self.value_out_pwm[10] = int(1000 + value_joi['led'] * 1000)
             
             self.serial_port.send_data(self.value_out_pwm)
 
