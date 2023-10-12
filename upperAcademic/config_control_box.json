@@ -21,13 +21,13 @@
 
         "min_value" : 0.3,
 
-        "power_linear_x" : 1, 
-        "power_linear_y" : 1,
-        "power_linear_z" : 1,
+        "power_linear_x" : 0.7, 
+        "power_linear_y" : 0.7,
+        "power_linear_z" : 0.7,
 
-        "power_rotate_x" : 1,
-        "power_rotate_y" : 1,
-        "power_rotate_z" : 1,
+        "power_rotate_x" : 0.2,
+        "power_rotate_y" : 0.2,
+        "power_rotate_z" : 0.2,
 
         "reverse_linear_x" : false,
         "reverse_linear_y" : false,
@@ -94,13 +94,13 @@
 
         "min_value" : 0.1,
 
-        "power_linear_x" : 1, 
-        "power_linear_y" : 1,
-        "power_linear_z" : 1,
+        "power_linear_x" : 0.7, 
+        "power_linear_y" : 0.7,
+        "power_linear_z" : 0.7,
 
-        "power_rotate_x" : 1,
-        "power_rotate_y" : 1,
-        "power_rotate_z" : 1,
+        "power_rotate_x" : 0.2,
+        "power_rotate_y" : 0.2,
+        "power_rotate_z" : 0.2,
 
         "reverse_linear_x" : false,
         "reverse_linear_y" : false,
