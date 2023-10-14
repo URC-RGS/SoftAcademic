@@ -11,8 +11,11 @@
 
         "timeout_serial" : 1,
 
-        "local_serial_debag" : true
+        "local_serial_debag" : true,
 
+        "nonlinear_control" : true,
+
+        "nonlinear_degree" : 3
     },
 
     "ROV" : {
