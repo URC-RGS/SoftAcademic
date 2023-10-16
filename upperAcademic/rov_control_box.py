@@ -63,7 +63,7 @@ class Control_Box:
         self.sleep_time = self.config_control_box['sleep_time']
         
         # массив частот pwm для отправки на аппарат 
-        self.value_out_pwm = [1500, 1510, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 2000, 1000]
+        self.value_out_pwm = [1500, 1515, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 2000, 1000]
         
         self.nonlinear_control = self.config_control_box['nonlinear_control']
         
