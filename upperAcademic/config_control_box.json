@@ -28,7 +28,7 @@
         "power_rotate_y" : 0.5,
         "power_rotate_z" : 0.5,
 
-        "reverse_linear_x" : false,
+        "reverse_linear_x" : true,
         "reverse_linear_y" : false,
         "reverse_linear_z" : false,
 
@@ -70,7 +70,7 @@
         "stick_L" : 4, 
         "stick_R" : 5,
 
-        "reverse_stick_jl_x" : true,
+        "reverse_stick_jl_x" : false,
         "reverse_stick_jl_y" : true,
         "reverse_stick_jr_x" : false,
         "reverse_stick_jr_y" : true,
