@@ -135,13 +135,13 @@ class Control_Box:
                 self.value_out_pwm[7] = 3000 - self.value_out_pwm[7]
 
     def nonlinear_function(self, value_joi):     
-        value_joi['linear_x'] **= self.nonlinear_degree
-        value_joi['linear_y'] **= self.nonlinear_degree
-        value_joi['linear_z'] **= self.nonlinear_degree
+        value_joi['linear_x'] = value_joi['linear_x'] ** self.nonlinear_degree
+        value_joi['linear_y'] = value_joi['linear_y'] ** self.nonlinear_degree
+        value_joi['linear_z'] = value_joi['linear_z'] ** self.nonlinear_degree
         
-        value_joi['rotate_x'] **= self.nonlinear_degree
-        value_joi['rotate_y'] **= self.nonlinear_degree
-        value_joi['rotate_z'] **= self.nonlinear_degree
+        value_joi['rotate_x'] = value_joi['rotate_x'] ** self.nonlinear_degree
+        value_joi['rotate_y'] = value_joi['rotate_y'] ** self.nonlinear_degree
+        value_joi['rotate_z'] = value_joi['rotate_z'] ** self.nonlinear_degree
         
         return value_joi
 
@@ -156,7 +156,7 @@ class Control_Box:
         while True:
             # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
             # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
-            value_joi = self.joystick_ps4.value
+            value_joi = dict(self.joystick_ps4.value)
             
             self.logi.debug(self.joystick_ps4.value)
             
