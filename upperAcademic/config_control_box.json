@@ -1,7 +1,7 @@
 {
     "CONTROL_BOX" : {
 
-        "sleep_time" : 0.2,
+        "sleep_time" : 0.04,
 
         "log_level" : "debug",
 
