@@ -2,7 +2,6 @@
 #include <GParser.h>
 #include <ServoSmooth.h>
 #include <AsyncStream.h>
-
 #include <Config.h>
 
 
@@ -85,7 +84,7 @@ void loop() {
         Serial.print(" PWM: ");
         Serial.println(data.getInt(1));
         // непосредственно подача шим на указанный пин
-        servos[pin].setTarget(pwm_out);} 
+        servos[pin].setCurrent(pwm_out);} 
 
       else Serial.println("Error");
       }
