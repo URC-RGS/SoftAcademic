@@ -158,10 +158,12 @@ class Control_Box:
             # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
             value_joi = dict(self.joystick_ps4.value)
             
-            self.logi.debug(self.joystick_ps4.value)
+            # self.logi.debug(self.joystick_ps4.value)
             
             if self.nonlinear_control:
                 value_joi = self.nonlinear_function(value_joi)
+                
+            # self.logi.debug(value_joi)
             
             # обработка различных схем 
             if self.config_rov['motor_scheme'] == 3:
