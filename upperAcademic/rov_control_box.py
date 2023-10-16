@@ -63,7 +63,7 @@ class Control_Box:
         self.sleep_time = self.config_control_box['sleep_time']
         
         # массив частот pwm для отправки на аппарат 
-        self.value_out_pwm = [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 2000, 1000]
+        self.value_out_pwm = [1505, 1505, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 2000, 1000]
         
         self.nonlinear_control = self.config_control_box['nonlinear_control']
         
@@ -165,21 +165,21 @@ class Control_Box:
                 
             # self.logi.debug(value_joi)
             
-            # обработка различных схем 
-            if self.config_rov['motor_scheme'] == 3:
-                self.math_three_motors_off_PID(value_joi)
+            # # обработка различных схем 
+            # if self.config_rov['motor_scheme'] == 3:
+            #     self.math_three_motors_off_PID(value_joi)
                 
-            elif self.config_rov['motor_scheme'] == 4:
-                self.math_four_motors_off_PID(value_joi)
+            # elif self.config_rov['motor_scheme'] == 4:
+            #     self.math_four_motors_off_PID(value_joi)
                 
-            elif self.config_rov['motor_scheme'] == 6:
-                self.math_six_motors_off_PID(value_joi)
+            # elif self.config_rov['motor_scheme'] == 6:
+            #     self.math_six_motors_off_PID(value_joi)
                 
-            elif self.config_rov['motor_scheme'] == 8:
-                self.math_eight_motors_off_PID(value_joi)
+            # elif self.config_rov['motor_scheme'] == 8:
+            #     self.math_eight_motors_off_PID(value_joi)
                         
-            else:
-                self.logi.critical('Error motor scheme support scheme 3, 4, 6, 8 motors')
+            # else:
+            #     self.logi.critical('Error motor scheme support scheme 3, 4, 6, 8 motors')
             
             self.check_reverse_motor()
             
