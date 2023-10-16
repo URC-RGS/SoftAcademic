@@ -142,6 +142,8 @@ class Control_Box:
         value_joi['rotate_x'] **= self.nonlinear_degree
         value_joi['rotate_y'] **= self.nonlinear_degree
         value_joi['rotate_z'] **= self.nonlinear_degree
+        
+        return value_joi
 
     # запуск прослушивания джойстика 
     def run_joystick(self):
