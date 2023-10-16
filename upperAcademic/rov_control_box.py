@@ -155,6 +155,7 @@ class Control_Box:
             # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
             # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
             self.value_joi = self.joystick_ps4.value
+            print(self.joystick_ps4.value)
             
             if self.nonlinear_control:
                 self.nonlinear_function()
