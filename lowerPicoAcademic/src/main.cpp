@@ -103,14 +103,14 @@ void loop() {
       int am = data.parseInts(data_input);
 
       // отправляем значения движители 
-      servos[0].setTarget(data_input[0]);
-      servos[1].setTarget(data_input[1]);
-      servos[2].setTarget(data_input[2]);
-      servos[3].setTarget(data_input[3]);
+      servos[0].writeMicroseconds(data_input[0]);
+      servos[1].writeMicroseconds(data_input[1]);
+      servos[2].writeMicroseconds(data_input[2]);
+      servos[3].writeMicroseconds(data_input[3]);
 
       // отправляем значения на сервопривод камеры и манипулятора 
-      servos[4].setTarget(data_input[8]);
-      servos[5].setTarget(data_input[9]);
+      servos[4].writeMicroseconds(data_input[8]);
+      servos[5].writeMicroseconds(data_input[9]);
 
       if (FEEDBEAK){
         // ответ на пост управления, в перспективе отправка данных с датчика оринтеции 
