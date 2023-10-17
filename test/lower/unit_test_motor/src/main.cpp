@@ -13,25 +13,25 @@ void setup() {
   Serial.begin(57600);
   
   // подключаем
-  servos[0].attach(PIN_MOTOR_0, 1000, 2000);
+  servos[0].attach(PIN_MOTOR_0, 600, 2400);
   servos[0].setSpeed(SPEED_MOTOR);
   servos[0].setAccel(ACCELERATE_MOTOR);
   servos[0].writeMicroseconds(1500);
   servos[0].setAutoDetach(false);
 
-  servos[1].attach(PIN_MOTOR_1, 1000, 2000);
+  servos[1].attach(PIN_MOTOR_1, 600, 2400);
   servos[1].setSpeed(SPEED_MOTOR);
   servos[1].setAccel(ACCELERATE_MOTOR);
   servos[1].writeMicroseconds(1500);
   servos[1].setAutoDetach(false);
 
-  servos[2].attach(PIN_MOTOR_2, 1000, 2000);
+  servos[2].attach(PIN_MOTOR_2, 600, 2400);
   servos[2].setSpeed(SPEED_MOTOR);
   servos[2].setAccel(ACCELERATE_MOTOR);
   servos[2].writeMicroseconds(1500);
   servos[2].setAutoDetach(false);
 
-  servos[3].attach(PIN_MOTOR_3, 1000, 2000);
+  servos[3].attach(PIN_MOTOR_3, 600, 2400);
   servos[3].setSpeed(SPEED_MOTOR);
   servos[3].setAccel(ACCELERATE_MOTOR);
   servos[3].writeMicroseconds(1500);
@@ -78,7 +78,7 @@ void loop() {
     if (am == 2) {
       int pin = data.getInt(0);
       int pwm_out = data.getInt(1);
-      if (pin > -1 and pin < 8 and pwm_out > 999 and pwm_out < 2001){
+      if (pin > -1 and pin < 8 and pwm_out > 599 and pwm_out < 2401){
         Serial.print("Output: ");
         Serial.print(data.getInt(0));
         Serial.print(" PWM: ");
