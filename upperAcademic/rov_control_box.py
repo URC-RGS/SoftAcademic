@@ -63,7 +63,7 @@ class Control_Box:
         self.sleep_time = self.config_control_box['sleep_time']
         
         # массив частот pwm для отправки на аппарат 
-        self.value_out_pwm = [1490, 1490, 1490, 1490, 1500, 1500, 1500, 1500, 1500, 2000, 1000]
+        self.value_out_pwm = [1485, 1485, 1485, 1485, 1500, 1500, 1500, 1500, 1500, 2000, 1000]
         
         self.nonlinear_control = self.config_control_box['nonlinear_control']
         
@@ -87,10 +87,10 @@ class Control_Box:
             # сложение векторов и преобразование в частот шим 
             # [M0, M1, M2, M3, M4, M5, M6, M7, CAM(8), GRIPPER(9), LED(10)]
             # математика моторов 2000 - вперед (для манипулятора закрыть) (для светильника включить); 1000 - назад (для манипулятора открыть) (для светильника выключить)
-            self.value_out_pwm[0] = int((1490 + value_joi['linear_x'] * 500) + (1490 + value_joi['rotate_y'] * 500) - 1490)
-            self.value_out_pwm[1] = int((1490 + value_joi['linear_x'] * 500) - (1490 + value_joi['rotate_y'] * 500) + 1490)
-            self.value_out_pwm[2] = int(1490 + value_joi['linear_y'] * 500 + (1490 + value_joi['rotate_x'] * 500) - 1490)
-            self.value_out_pwm[3] = int(1490 + value_joi['linear_y'] * 500 - (1490 + value_joi['rotate_x'] * 500) + 1490)
+            self.value_out_pwm[0] = int((1485 + value_joi['linear_x'] * 500) + (1485 + value_joi['rotate_y'] * 500) - 1485)
+            self.value_out_pwm[1] = int((1485 + value_joi['linear_x'] * 500) - (1485 + value_joi['rotate_y'] * 500) + 1485)
+            self.value_out_pwm[2] = int(1485 + value_joi['linear_y'] * 500 + (1485 + value_joi['rotate_x'] * 500) - 1485)
+            self.value_out_pwm[3] = int(1485 + value_joi['linear_y'] * 500 - (1485 + value_joi['rotate_x'] * 500) + 1485)
             
     # TODO протестировать 
     def math_six_motors_off_PID(self, value_joi):  
