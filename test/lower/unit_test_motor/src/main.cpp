@@ -16,49 +16,49 @@ void setup() {
   servos[0].attach(PIN_MOTOR_0, 1000, 2000);
   servos[0].setSpeed(SPEED_MOTOR);
   servos[0].setAccel(ACCELERATE_MOTOR);
-  servos[0].setCurrent(1500);
+  servos[0].writeMicroseconds(1500);
   servos[0].setAutoDetach(false);
 
   servos[1].attach(PIN_MOTOR_1, 1000, 2000);
   servos[1].setSpeed(SPEED_MOTOR);
   servos[1].setAccel(ACCELERATE_MOTOR);
-  servos[1].setCurrent(1500);
+  servos[1].writeMicroseconds(1500);
   servos[1].setAutoDetach(false);
 
   servos[2].attach(PIN_MOTOR_2, 1000, 2000);
   servos[2].setSpeed(SPEED_MOTOR);
   servos[2].setAccel(ACCELERATE_MOTOR);
-  servos[2].setCurrent(1500);
+  servos[2].writeMicroseconds(1500);
   servos[2].setAutoDetach(false);
 
   servos[3].attach(PIN_MOTOR_3, 1000, 2000);
   servos[3].setSpeed(SPEED_MOTOR);
   servos[3].setAccel(ACCELERATE_MOTOR);
-  servos[3].setCurrent(1500);
+  servos[3].writeMicroseconds(1500);
   servos[3].setAutoDetach(false);
 
   servos[4].attach(PIN_MOTOR_4, 1000, 2000);
   servos[4].setSpeed(SPEED_MOTOR);
   servos[4].setAccel(ACCELERATE_MOTOR);
-  servos[4].setCurrent(1500);
+  servos[4].writeMicroseconds(1500);
   servos[4].setAutoDetach(false);
 
   servos[5].attach(PIN_MOTOR_5, 1000, 2000);
   servos[5].setSpeed(SPEED_MOTOR);
   servos[5].setAccel(ACCELERATE_MOTOR);
-  servos[5].setCurrent(1500);
+  servos[5].writeMicroseconds(1500);
   servos[5].setAutoDetach(false);
 
   servos[6].attach(PIN_SERVO_CAM, 1000, 2000);
   servos[6].setSpeed(SPEED_SERVO);
   servos[6].setAccel(ACCELERATE_SERVO);
-  servos[6].setCurrent(1500);
+  servos[6].writeMicroseconds(1500);
   servos[6].setAutoDetach(false);
 
   servos[7].attach(PIN_SERVO_ARM, 1000, 2000);
   servos[7].setSpeed(SPEED_SERVO);
   servos[7].setAccel(ACCELERATE_SERVO);
-  servos[7].setCurrent(1500);
+  servos[7].writeMicroseconds(1500);
   servos[7].setAutoDetach(false);
 }
 
@@ -84,7 +84,7 @@ void loop() {
         Serial.print(" PWM: ");
         Serial.println(data.getInt(1));
         // непосредственно подача шим на указанный пин
-        servos[pin].setCurrent(pwm_out);} 
+        servos[pin].writeMicroseconds(pwm_out);} 
 
       else Serial.println("Error");
       }
