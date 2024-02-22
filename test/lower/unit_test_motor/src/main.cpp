@@ -55,7 +55,7 @@ void setup() {
   servos[6].writeMicroseconds(1500);
   servos[6].setAutoDetach(false);
 
-  servos[7].attach(PIN_SERVO_ARM, 1000, 2000);
+  servos[7].attach(PIN_SERVO_ARM, 600, 2400);
   servos[7].setSpeed(SPEED_SERVO);
   servos[7].setAccel(ACCELERATE_SERVO);
   servos[7].writeMicroseconds(1500);
