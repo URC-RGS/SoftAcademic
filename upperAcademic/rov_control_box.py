@@ -108,8 +108,8 @@ class Control_Box:
             value_joi['linear_y'] *= 1
                 
             
-        self.value_out_pwm[0] = int((1500 + value_joi['linear_x'] * 550) + (1500 + value_joi['rotate_y'] * 500) - 1500)
-        self.value_out_pwm[1] = int((1500 + value_joi['linear_x'] * 500) - (1500 + value_joi['rotate_y'] * 500) + 1500)
+        self.value_out_pwm[0] = int((1500 + value_joi['linear_x'] * 500) + (1500 + value_joi['rotate_y'] * 500) - 1500)
+        self.value_out_pwm[1] = int((1500 + value_joi['linear_x'] * 550) - (1500 + value_joi['rotate_y'] * 500) + 1500)
         self.value_out_pwm[2] = int(1500 + value_joi['linear_y'] * 500 + (1500 + value_joi['rotate_x'] * 500) - 1500)
         self.value_out_pwm[3] = int(1500 + value_joi['linear_y'] * 500 - (1500 + value_joi['rotate_x'] * 500) + 1500)
             
