@@ -212,11 +212,17 @@ class Control_Box:
                 self.value_out_pwm[8] = 2000 
                 
             # self.value_out_pwm[9] = int(1500 - value_joi['gripper'] * 500)
-            self.value_out_pwm[9] =  self.value_out_pwm[9] + value_joi['gripper'] * 5 * self.config_rov['step_gripper']
-            if self.value_out_pwm[9] <= 1000:
-                self.value_out_pwm[9] = 1000
-            elif self.value_out_pwm[9] >= 2000:
-                self.value_out_pwm[9] = 2000 
+            # self.value_out_pwm[9] =  self.value_out_pwm[9] + value_joi['gripper'] * 5 * self.config_rov['step_gripper']
+            # if self.value_out_pwm[9] <= 1000:
+            #     self.value_out_pwm[9] = 1000
+            # elif self.value_out_pwm[9] >= 2000:
+            #     self.value_out_pwm[9] = 2000 
+            
+            if value_joi['gripper'] == -1:
+                self.value_out_pwm[9] = self.config_rov['gripper_max']
+            elif value_joi['gripper'] == 1:
+                self.value_out_pwm[9] = self.config_rov['gripper_min']
+                
                 
             self.value_out_pwm[10] = int(1000 + value_joi['led'] * 1000)
             
