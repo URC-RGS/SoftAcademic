@@ -52,8 +52,8 @@
         "cam_max" : 2000,
 
         "step_gripper" : 10,
-        "gripper_min" : 1500,
-        "gripper_max" : 2000
+        "gripper_min" : 1400,
+        "gripper_max" : 1900
 
     },
 
