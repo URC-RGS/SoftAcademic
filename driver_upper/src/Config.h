@@ -11,3 +11,5 @@ const uint16_t BITRATE = 57600;
 const bool LCD_DISP = true;
 
 const bool SPEAKER = false;
+
+const bool DEBUG = true;

@@ -1,6 +1,6 @@
 const bool DEBUG = true;
 
-const bool FEEDBEAK = false;
+const bool FEEDBEAK = true;
 
 // подключение UART
 const uint16_t UART_COM = 18;
@@ -13,14 +13,15 @@ const uint16_t PIN_MOTOR_0 = 0;
 const uint16_t PIN_MOTOR_1 = 1;
 const uint16_t PIN_MOTOR_2 = 2;
 const uint16_t PIN_MOTOR_3 = 3;
+const uint16_t PIN_MOTOR_4 = 4;
+const uint16_t PIN_MOTOR_5 = 5;
 
-const bool REVERSE_MOTOR_0 = true;
-const bool REVERSE_MOTOR_1 = false;
-const bool REVERSE_MOTOR_2 = false;
-const bool REVERSE_MOTOR_3 = true;
 
 const float_t ACCEL_MOTORS = 4.0;
 const uint16_t SPEED_MOTORS = 2500;
+
+const uint16_t SPEED_SERVO = 70;
+const uint16_t ACCELERATE_SERVO = 0.7;
 
 // подключение сервопривода камеры 
 const uint16_t PIN_SERVO_CAM = 6;

@@ -21,7 +21,7 @@ void setup() {
   Serial1.setTX(UART_0_TX);
   Serial1.begin(BITRATE);
   pinMode(UART_COM, OUTPUT);
-  digitalWrite(UART_COM, HIGH);
+  digitalWrite(UART_COM, LOW);
 
   // подключение сериала для общения с постом управления 
   Serial2.setRX(UART_1_RX);
@@ -33,17 +33,26 @@ void setup() {
 }
 
 void loop() {
-  // если данные получены
+  // если данные получены (ретранслятор)
   if (serial2.available()) {     
 
-    // выводим их (как char*)
+    digitalWrite(UART_COM, HIGH);
+    delay(10);
     Serial1.println(serial2.buf);  
+    Serial.println(serial2.buf);
+    delay(10);
+    digitalWrite(UART_COM, LOW);  
 
-    Serial.println(serial2.buf);   
+  }
+
+  if (serial1.available()) {     
+
+    Serial.println(serial1.buf); 
+
   }
 
   // мигалка для индикации работы 
-  if (millis()- turnTimer >= 200){
+  if (millis()- turnTimer >= 500){
     turnTimer = millis();
 
     if (ledState == LOW) ledState = HIGH;

@@ -8,7 +8,7 @@
 #include <GyverFilters.h>
 
 
-ServoSmooth servos[6];
+ServoSmooth servos[8];
 AsyncStream<100> serialCom(&Serial1, '\n');
 // TODO подобрать параметры измерения вольтажа
 GKalman testFilter(10, 10, 0.1);
@@ -32,45 +32,75 @@ void setup() {
   servos[0].attach(PIN_MOTOR_0, 1000, 2000);
   servos[0].setSpeed(SPEED_MOTORS);
   servos[0].setAccel(ACCEL_MOTORS);
-  servos[0].writeMicroseconds(1500);
   servos[0].setAutoDetach(false);
-  servos[0].setDirection(REVERSE_MOTOR_0);
+  // servos[0].setDirection(REVERSE_MOTOR_0);
 
   servos[1].attach(PIN_MOTOR_1, 1000, 2000);
   servos[1].setSpeed(SPEED_MOTORS);
   servos[1].setAccel(ACCEL_MOTORS);
-  servos[1].writeMicroseconds(1500);
   servos[1].setAutoDetach(false);
-  servos[1].setDirection(REVERSE_MOTOR_1);
+  // servos[1].setDirection(REVERSE_MOTOR_1);
 
   servos[2].attach(PIN_MOTOR_2, 1000, 2000);
   servos[2].setSpeed(SPEED_MOTORS);
   servos[2].setAccel(ACCEL_MOTORS);
-  servos[2].writeMicroseconds(1500);
   servos[2].setAutoDetach(false);
-  servos[2].setDirection(REVERSE_MOTOR_2);
+  // servos[2].setDirection(REVERSE_MOTOR_2);
 
   servos[3].attach(PIN_MOTOR_3, 1000, 2000);
   servos[3].setSpeed(SPEED_MOTORS);
   servos[3].setAccel(ACCEL_MOTORS);
-  servos[3].writeMicroseconds(1500);
   servos[3].setAutoDetach(false);
-  servos[3].setDirection(REVERSE_MOTOR_3);
+  // servos[3].setDirection(REVERSE_MOTOR_3);
 
-  // подключаем камеру 
-  servos[4].attach(PIN_SERVO_CAM, 600, 2400);
-  servos[4].setSpeed(100);
-  servos[4].setAccel(0);
+  servos[4].attach(PIN_MOTOR_4, 1000, 2000);
+  servos[4].setSpeed(SPEED_MOTORS);
+  servos[4].setAccel(ACCEL_MOTORS);
+  servos[4].setAutoDetach(false);
+  // servos[4].setDirection(REVERSE_MOTOR_4);
 
-  // подключаем манипулятор
-  servos[5].attach(PIN_SERVO_ARM, 600, 2400);
-  servos[5].setSpeed(200);
-  servos[5].setAccel(0.99);
+  servos[5].attach(PIN_MOTOR_5, 1000, 2000);
+  servos[5].setSpeed(SPEED_MOTORS);
+  servos[5].setAccel(ACCEL_MOTORS);
+  servos[5].setAutoDetach(false);
+  // servos[5].setDirection(REVERSE_MOTOR_5);
+
+  servos[6].attach(PIN_SERVO_CAM, 1000, 2000);
+  servos[6].setSpeed(SPEED_SERVO);
+  servos[6].setAccel(ACCELERATE_SERVO);
+  servos[6].writeMicroseconds(1500);
+  servos[6].setAutoDetach(false);
+
+  servos[7].attach(PIN_SERVO_ARM, 1000, 2000);
+  servos[7].setSpeed(SPEED_SERVO);
+  servos[7].setAccel(ACCELERATE_SERVO);
+  servos[7].writeMicroseconds(1500);
+  servos[7].setAutoDetach(false);
+
+  servos[0].writeMicroseconds(2000);
+  servos[1].writeMicroseconds(2000);
+  servos[2].writeMicroseconds(2000);
+  servos[3].writeMicroseconds(2000);
+  servos[4].writeMicroseconds(2000);
   servos[5].writeMicroseconds(2000);
+  delay(5000);
+  // servos[0].writeMicroseconds(1000);
+  // servos[1].writeMicroseconds(1000);
+  // servos[2].writeMicroseconds(1000);
+  // servos[3].writeMicroseconds(1000);
+  // servos[4].writeMicroseconds(1000);
+  // servos[5].writeMicroseconds(1000);
+  // delay(5000);
+  servos[0].writeMicroseconds(1500);
+  servos[1].writeMicroseconds(1500);
+  servos[2].writeMicroseconds(1500);
+  servos[3].writeMicroseconds(1500);
+  servos[4].writeMicroseconds(1500);
+  servos[5].writeMicroseconds(1500);
+  delay(5000);
+
   digitalWrite(LED_BUILTIN, LOW);
 
-  // инициализируем моторы 
-  delay(2000);
 }
 
 void loop() {
@@ -82,6 +112,8 @@ void loop() {
     servos[3].tick();
     servos[4].tick();
     servos[5].tick();
+    servos[6].tick();
+    servos[7].tick();
 
     // мигалка для индикации работы
     if (ledState == LOW) ledState = HIGH;
@@ -104,20 +136,25 @@ void loop() {
 
       // отправляем значения движители 
       servos[0].writeMicroseconds(data_input[0]);
-      servos[1].writeMicroseconds(data_input[1]);
+      servos[1].writeMicroseconds(3000 - data_input[1]);
       servos[2].writeMicroseconds(data_input[2]);
-      servos[3].writeMicroseconds(data_input[3]);
+      servos[3].writeMicroseconds(3000 - data_input[3]);
+      servos[4].writeMicroseconds(3000 - data_input[4]);
+      servos[5].writeMicroseconds(data_input[5]);
 
       // отправляем значения на сервопривод камеры и манипулятора 
-      servos[4].writeMicroseconds(data_input[8]);
-      servos[5].writeMicroseconds(data_input[9]);
+      servos[6].writeMicroseconds(data_input[8]);
+      servos[7].writeMicroseconds(data_input[9]);
 
       if (FEEDBEAK){
+        digitalWrite(UART_COM, HIGH);
+        delay(10);
         // ответ на пост управления, в перспективе отправка данных с датчика оринтеции 
         Serial1.println(testFilter.filtered(analogRead(28)));
 
         if (DEBUG) Serial.println(testFilter.filtered(analogRead(28)));
-
+        delay(10);
+        digitalWrite(UART_COM, LOW);
       }
     }
   }  
