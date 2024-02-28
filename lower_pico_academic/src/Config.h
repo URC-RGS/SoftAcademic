@@ -2,6 +2,8 @@ const bool DEBUG = true;
 
 const bool FEEDBEAK = true;
 
+const bool DEPTH = true;
+
 // подключение UART
 const uint16_t UART_COM = 18;
 const uint16_t UART_RX = 17;

@@ -5,8 +5,9 @@
 #include <AsyncStream.h>
 #include <ServoSmooth.h>
 #include <Config.h>
+#include "MS5837.h"
 #include <GyverFilters.h>
-
+#include <Wire.h>
 
 ServoSmooth servos[8];
 AsyncStream<100> serialCom(&Serial1, '\n');
@@ -14,6 +15,7 @@ AsyncStream<100> serialCom(&Serial1, '\n');
 GKalman testFilter(10, 10, 0.1);
 uint32_t turnTimer;
 int ledState = LOW;
+MS5837 sensor;
 
 
 void setup() {
@@ -27,6 +29,22 @@ void setup() {
   pinMode(UART_COM, OUTPUT);
   digitalWrite(UART_COM, LOW);
   Serial1.begin(BITRATE);
+  
+  if (DEPTH) {
+    Wire.setSDA(20);
+    Wire.setSCL(21);
+    Wire.begin();
+
+    while (!sensor.init()) {
+      Serial.println("Init failed!");
+      Serial.println("Are SDA/SCL connected correctly?");
+      Serial.println("Blue Robotics Bar30: White=SDA, Green=SCL");
+      Serial.println("\n\n\n");
+      delay(5000);
+    }
+    sensor.setModel(MS5837::MS5837_30BA);
+    sensor.setFluidDensity(997); // плотность воды 
+  }
 
   // подключаем моторы 
   servos[0].attach(PIN_MOTOR_0, 1000, 2000);
@@ -147,12 +165,24 @@ void loop() {
       servos[7].writeMicroseconds(data_input[9]);
 
       if (FEEDBEAK){
+        sensor.read();
         digitalWrite(UART_COM, HIGH);
         delay(10);
-        // ответ на пост управления, в перспективе отправка данных с датчика оринтеции 
-        Serial1.println(testFilter.filtered(analogRead(28)));
 
-        if (DEBUG) Serial.println(testFilter.filtered(analogRead(28)));
+        // ответ на пост управления, в перспективе отправка данных с датчика оринтеции 
+        Serial1.print(testFilter.filtered(analogRead(28)));
+        Serial1.print(' ');
+        Serial1.print(sensor.temperature());
+        Serial1.print(' ');
+        Serial1.println(sensor.depth()); 
+
+        if (DEBUG) {
+          Serial.print(testFilter.filtered(analogRead(28)));
+          Serial.print(' ');
+          Serial.print(sensor.temperature());
+          Serial.print(' ');
+          Serial.println(sensor.depth()); 
+        }
         delay(10);
         digitalWrite(UART_COM, LOW);
       }

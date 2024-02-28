@@ -9,6 +9,7 @@
 AsyncStream<100> serial(&Serial, '\n');
 AsyncStream<100> serial1(&Serial1, '\n');
 AsyncStream<100> serial2(&Serial2, '\n');
+LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
 uint32_t turnTimer;
 int ledState = LOW;
@@ -30,6 +31,12 @@ void setup() {
 
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(19, OUTPUT);
+
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(1,1);
+  lcd.print("Hello SoftAcademic");
+  delay(1000);
 }
 
 void loop() {
@@ -37,10 +44,10 @@ void loop() {
   if (serial2.available()) {     
 
     digitalWrite(UART_COM, HIGH);
-    delay(10);
+    delay(15);
     Serial1.println(serial2.buf);  
     Serial.println(serial2.buf);
-    delay(10);
+    delay(15);
     digitalWrite(UART_COM, LOW);  
 
   }
@@ -48,7 +55,9 @@ void loop() {
   if (serial1.available()) {     
 
     Serial.println(serial1.buf); 
-
+    lcd.setCursor(0,1);
+    lcd.print(serial1.buf);
+    
   }
 
   // мигалка для индикации работы 
