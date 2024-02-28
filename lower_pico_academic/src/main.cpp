@@ -167,23 +167,23 @@ void loop() {
       if (FEEDBEAK){
         sensor.read();
         digitalWrite(UART_COM, HIGH);
-        delay(10);
+        delay(5);
 
         // ответ на пост управления, в перспективе отправка данных с датчика оринтеции 
-        Serial1.print(testFilter.filtered(analogRead(28)));
+        Serial1.print(testFilter.filtered(analogRead(28) * 0.0359));
         Serial1.print(' ');
         Serial1.print(sensor.temperature());
         Serial1.print(' ');
         Serial1.println(sensor.depth()); 
 
         if (DEBUG) {
-          Serial.print(testFilter.filtered(analogRead(28)));
+          Serial.print(testFilter.filtered(analogRead(28) * 0.0359));
           Serial.print(' ');
           Serial.print(sensor.temperature());
           Serial.print(' ');
           Serial.println(sensor.depth()); 
         }
-        delay(10);
+        delay(5);
         digitalWrite(UART_COM, LOW);
       }
     }

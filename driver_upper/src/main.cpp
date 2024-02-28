@@ -44,20 +44,28 @@ void loop() {
   if (serial2.available()) {     
 
     digitalWrite(UART_COM, HIGH);
-    delay(15);
+    delay(5);
     Serial1.println(serial2.buf);  
     Serial.println(serial2.buf);
-    delay(15);
+    delay(5);
     digitalWrite(UART_COM, LOW);  
 
   }
 
   if (serial1.available()) {     
-
+    // GParser data = GParser(serial1.buf, ' ');
     Serial.println(serial1.buf); 
     lcd.setCursor(0,1);
     lcd.print(serial1.buf);
+    // lcd.print(" ");
+    // lcd.print(data[1]);
+    // lcd.print(" ");
+    // lcd.print(data[2]);
     
+    lcd.setCursor(0,2);
+    lcd.print(" ");
+    lcd.setCursor(0,3);
+    lcd.print(" ");
   }
 
   // мигалка для индикации работы 
