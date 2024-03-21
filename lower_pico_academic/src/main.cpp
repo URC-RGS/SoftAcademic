@@ -37,7 +37,7 @@ void setup() {
 
     while (!sensor.init()) {
       Serial.println("Init failed!");
-      Serial.println("Are SDA/SCL connected correctly?");
+      Serial.println("Are SDA/SCL connected correctly?");ё
       Serial.println("Blue Robotics Bar30: White=SDA, Green=SCL");
       Serial.println("\n\n\n");
       delay(5000);
@@ -121,7 +121,12 @@ void setup() {
 
 }
 
-void loop() {
+void loop(){
+  
+}
+
+
+void loop1() {
   if (millis()- turnTimer >= 15){
     turnTimer = millis();
     servos[0].tick();
@@ -165,23 +170,23 @@ void loop() {
       servos[7].writeMicroseconds(data_input[9]);
 
       if (FEEDBEAK){
-        sensor.read();
+        // sensor.read();
         digitalWrite(UART_COM, HIGH);
         delay(5);
 
         // ответ на пост управления, в перспективе отправка данных с датчика оринтеции 
-        Serial1.print(testFilter.filtered(analogRead(28) * 0.0359));
-        Serial1.print(' ');
-        Serial1.print(sensor.temperature());
-        Serial1.print(' ');
-        Serial1.println(sensor.depth()); 
+        Serial1.println(testFilter.filtered(analogRead(28) * 0.0359));
+        // Serial1.print(' ');
+        // Serial1.print(sensor.temperature());
+        // Serial1.print(' ');
+        // Serial1.println(sensor.depth()); 
 
         if (DEBUG) {
-          Serial.print(testFilter.filtered(analogRead(28) * 0.0359));
-          Serial.print(' ');
-          Serial.print(sensor.temperature());
-          Serial.print(' ');
-          Serial.println(sensor.depth()); 
+          Serial.println(testFilter.filtered(analogRead(28) * 0.0359));
+          // Serial.print(' ');
+          // Serial.print(sensor.temperature());
+          // Serial.print(' ');
+          // Serial.println(sensor.depth()); 
         }
         delay(5);
         digitalWrite(UART_COM, LOW);
